@@ -1,0 +1,212 @@
+/* Contenedor que envuelve la cuadrícula */
+.grid-container {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Cuadrícula */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1200px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Elemento de la cuadrícula */
+.grid-item {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 70%;
+    box-sizing: border-box;
+}
+
+/* Imágenes */
+.grid-item img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+header {
+    background-color: #0a2481;
+    color: white;
+    padding: 1em 0;
+    text-align: center;
+    max-height: 100px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2em;
+    background-color: white;
+}
+
+h1 {
+    color: #ffffff;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+h2{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+p{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+a{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.welcome,
+.matches,
+.registration {
+    margin-bottom: 2em;
+}
+
+.match-list {
+    list-style: none;
+    padding: 0;
+}
+
+.match-item {
+    background-color: #f9f9f9;
+    margin: 0.5em 0;
+    padding: 1em;
+    border: 1px solid #ddd;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-form label {
+    margin-bottom: 0.5em;
+}
+
+.registration-form input,
+.registration-form button {
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+
+.registration-form button {
+    background-color: #0c2b80;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.registration-form button:hover {
+    background-color: #102371;
+}
+
+.grid-header {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    max-height: 70%;    
+}
+
+.grid-item-right {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding-right: 10px;
+    max-height: 70%;
+}
+
+.responsive-logo {
+    max-width: 100%;
+    height: auto;
+    padding-bottom: 10px;
+}
+
+/* Estilos del menú desplegable */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    right: 0;
+    /* Alinea el menú desplegable al borde derecho del contenedor */
+    left: auto;
+    /* Asegura que el menú no se salga por la izquierda */
+    border-radius: 12px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+    border-radius: 16px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #c72929;
+}
+
+.dropbtn {
+    background-color: #c72929;
+    color: white;
+    padding: 16px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+    /* Bordes redondeados */
+}
+
+.elementor-widget-container {
+    margin-top: 10px; /* Añadir margen superior para separar las dos imágenes si es necesario */
+}
