@@ -1,34 +1,52 @@
-version: '4.30'
+version: '3.8'
 
 services:
   frontend:
     build: ./frontend
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - backend
+    command: npm run start
+    networks:
+      - obligatoriow_net
 
   backend:
     build: ./backend
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=mysql://user:password@db:3306/mydatabase
+      - MYSQL_HOST=db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=rootpass1234
+      - MYSQL_DATABASE=PencaUCU
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    networks:
+      - obligatoriow_net
 
   db:
     image: mysql:latest
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: mydatabase
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpass1234
+      MYSQL_DATABASE: PencaUCU
     volumes:
       - db_data:/var/lib/mysql
       - ./init_database.sql:/docker-entrypoint-initdb.d/init_database.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - obligatoriow_net
 
 volumes:
   db_data:
+
+networks:
+  obligatoriow_net:
+    driver: bridge

@@ -13,18 +13,6 @@ RUN npm install
 # Copia el resto del código de la aplicación
 COPY . .
 
-# Construye la aplicación Angular
-RUN npm run build
-
 # Usa una imagen base de Nginx para servir la aplicación Angular
-FROM nginx:alpine
-
-# Copia los archivos construidos a la carpeta de Nginx
-COPY --from=0 /app/dist/frontend /usr/share/nginx/html
-
-# Expone el puerto 80
-EXPOSE 80
-
-# Comando para correr Nginx
-CMD ["nginx", "-g", "daemon off;"]
-
+# Sin embargo, en este caso usaremos 'ng serve' para desarrollo
+CMD ["npm", "run", "start"]
