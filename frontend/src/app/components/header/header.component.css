@@ -1,15 +1,99 @@
+/* Header responsive */
 .grid-header {
     background-color: #0a2481;
     color: white;
     padding: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centramos todos los elementos inicialmente */
     text-align: center;
-    max-height: 100px;
+    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas si es necesario */
+    position: relative;
+}
+
+.grid-item, .grid-item-right, .grid-item-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+}
+
+.grid-item {
+    flex: 1;
+    justify-content: flex-start; /* Alineamos a la izquierda */
+}
+
+.grid-item-center {
+    flex: 2; /* Hacemos que el centro ocupe más espacio */
+}
+
+.grid-item-right {
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.responsive-logo {
+    max-width: 150px; /* Ajusta este valor según sea necesario */
+    height: auto;
+}
+
+.site-title {
+    font-size: 2rem; /* Ajusta el tamaño del título */
+}
+
+.dropbtn {
+    background-color: #c72929;
+    color: white;
+    padding: 10px 16px; /* Ajusta el padding según sea necesario */
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+@media (max-width: 1200px) {
+    .responsive-logo {
+        max-width: 120px; /* Ajusta el tamaño de la imagen en pantallas medianas */
+    }
+
+    .site-title {
+        font-size: 1.5rem; /* Ajusta el tamaño del título en pantallas medianas */
+    }
+
+    .dropbtn {
+        padding: 8px 12px; /* Ajusta el padding del botón en pantallas medianas */
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .responsive-logo {
+        max-width: 80px; /* Ajusta el tamaño de la imagen en pantallas pequeñas */
+    }
+
+    .site-title {
+        font-size: 1.2rem; /* Ajusta el tamaño del título en pantallas pequeñas */
+    }
+
+    .dropbtn {
+        padding: 6px 10px; /* Ajusta el padding del botón en pantallas pequeñas */
+        font-size: 0.8rem;
+    }
+}
+
+/* Eliminar los márgenes blancos alrededor del body */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
 /* Contenedor que envuelve la cuadrícula */
 .grid-container {
     width: 100%;
     overflow-x: hidden;
+    margin: 0 auto; /* Centra el contenido horizontalmente */
+    padding: 0; /* Elimina el padding adicional */
 }
 
 /* Cuadrícula */
@@ -20,6 +104,7 @@
     padding: 10px;
     box-sizing: border-box;
 }
+
 /* Elemento de la cuadrícula */
 .grid-item {
     display: flex;
@@ -36,6 +121,7 @@
     height: auto;
     display: block;
 }
+
 header {
     background-color: #0a2481;
     color: white;
@@ -43,45 +129,22 @@ header {
     text-align: center;
     max-height: 100px;
 }
+
 h1 {
     color: #ffffff;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
-h2{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-p{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-a{
+
+h2 {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.grid-header {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-.grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px;
-    max-height: 70%;    
-}
-
-.grid-item-right {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    padding-right: 10px;
-    max-height: 70%;
-}
-
-.responsive-logo {
-    max-width: 100%;
-    height: auto;
-    padding-bottom: 10px;
+a {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* Estilos del menú desplegable */
@@ -98,9 +161,7 @@ a{
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     right: 0;
-    /* Alinea el menú desplegable al borde derecho del contenedor */
     left: auto;
-    /* Asegura que el menú no se salga por la izquierda */
     border-radius: 12px;
 }
 
@@ -124,6 +185,7 @@ a{
     background-color: #c72929;
 }
 
+/* Bordes redondeados */
 .dropbtn {
     background-color: #c72929;
     color: white;
@@ -133,5 +195,8 @@ a{
     border: none;
     cursor: pointer;
     border-radius: 12px;
-    /* Bordes redondeados */
+}
+
+.elementor-widget-container {
+    margin-top: 10px; /* Añadir margen superior para separar las dos imágenes si es necesario */
 }
