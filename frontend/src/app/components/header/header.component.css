@@ -45,7 +45,7 @@
     background-color: #c72929;
     color: white;
     padding: 10px 16px; /* Ajusta el padding según sea necesario */
-    font-size: 1rem;
+    font-size: 1.5rem;
     border: none;
     cursor: pointer;
     border-radius: 12px;
@@ -62,7 +62,7 @@
 
     .dropbtn {
         padding: 8px 12px; /* Ajusta el padding del botón en pantallas medianas */
-        font-size: 0.9rem;
+        font-size: 1.3rem;
     }
 }
 
@@ -77,7 +77,7 @@
 
     .dropbtn {
         padding: 6px 10px; /* Ajusta el padding del botón en pantallas pequeñas */
-        font-size: 0.8rem;
+        font-size: 1.2rem;
     }
 }
 
@@ -189,7 +189,6 @@ a {
 .dropbtn {
     background-color: #c72929;
     color: white;
-    padding: 16px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 16px;
     border: none;
