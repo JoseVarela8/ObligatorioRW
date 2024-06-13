@@ -11,5 +11,22 @@
       </div>
       <button type="submit">Ingresar</button>
     </form>
+    <h2>Lista de Alumnos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alumno of alumnos">
+            <td>{{ alumno.id }}</td>
+            <td>{{ alumno.nombre }}</td>
+            <td>{{ alumno.valor }}</td>
+          </tr>
+        </tbody>
+      </table>
   </div>
   

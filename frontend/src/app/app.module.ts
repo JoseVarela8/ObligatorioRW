@@ -11,6 +11,8 @@ import { MainComponent } from './components/main/main.component';
 import { RegisterComponent } from './components/register/register.component';
 import { StadiumsComponent } from './components/stadiums/stadiums.component';
 import { TeamsComponent } from './components/teams/teams.component';
+import { provideHttpClient } from '@angular/common/http';
+
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -36,10 +38,11 @@ const routes: Routes = [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    RouterModule.forRoot(routes)  // Asegúrate de usar forRoot para configurar las rutas principales
+    RouterModule.forRoot(routes),  // Asegúrate de usar forRoot para configurar las rutas principales
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    provideHttpClient()
   ],
   bootstrap: [AppComponent]
 })
