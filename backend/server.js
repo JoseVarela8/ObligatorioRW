@@ -23,18 +23,6 @@ db.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
-// Crear una ruta para obtener datos de la base de datos
-app.get('/datos', (req, res) => {
-  const sql = 'SELECT * FROM Alumnos';
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error querying MySQL:', err);
-      return res.status(500).send('Error querying MySQL');
-    }
-    res.json(results);
-  });
-});
-
 // Crear una ruta para insertar un nuevo alumno
 app.post('/alumnos', (req, res) => {
   console.log('Solicitud POST recibida:', req.body);
