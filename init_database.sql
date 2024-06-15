@@ -1,64 +1,65 @@
-CREATE DATABASE IF NOT EXISTS PencaUCU;
+CREATE DATABASE IF NOT EXISTS PencaUCU CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE PencaUCU;
 
 -- Tabla Usuario
 CREATE TABLE IF NOT EXISTS Usuario (
   id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_usuario VARCHAR(255),
-  contrasena VARCHAR(255),
-  mail VARCHAR(255)
-);
+  nombre_usuario VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  contrasena VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  mail VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Admin
 CREATE TABLE IF NOT EXISTS Admin (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Carrera
 CREATE TABLE IF NOT EXISTS Carrera (
   id_carrera INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_carrera VARCHAR(255)
-);
+  nombre_carrera VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Alumno
 CREATE TABLE IF NOT EXISTS Alumno (
+  id_alumno INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   id_carrera INT,
   puntaje INT,
-  pred_champ VARCHAR(255),
-  pred_subchamp VARCHAR(255),
+  pred_champ VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  pred_subchamp VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
   FOREIGN KEY (id_carrera) REFERENCES Carrera(id_carrera)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Equipo
 CREATE TABLE IF NOT EXISTS Equipo (
   id_equipo INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_equipo VARCHAR(255)
-);
+  nombre_equipo VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Locacion
 CREATE TABLE IF NOT EXISTS Locacion (
   id_loc INT AUTO_INCREMENT PRIMARY KEY,
-  estado VARCHAR(255),
-  ciudad VARCHAR(255),
-  nombre_estadio VARCHAR(255)
-);
+  estado VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  ciudad VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  nombre_estadio VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Partido
 CREATE TABLE IF NOT EXISTS Partido (
   id_partido INT AUTO_INCREMENT PRIMARY KEY,
   fecha DATE,
-  fase VARCHAR(255),
+  fase VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   id_loc INT,
   id_equipo1 INT,
   id_equipo2 INT,
   FOREIGN KEY (id_loc) REFERENCES Locacion(id_loc),
   FOREIGN KEY (id_equipo1) REFERENCES Equipo(id_equipo),
   FOREIGN KEY (id_equipo2) REFERENCES Equipo(id_equipo)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Resultado
 CREATE TABLE IF NOT EXISTS Resultado (
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS Resultado (
   goles_equipo1 INT,
   goles_equipo2 INT,
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Prediccion
 CREATE TABLE IF NOT EXISTS Prediccion (
@@ -77,10 +78,10 @@ CREATE TABLE IF NOT EXISTS Prediccion (
   id_partido INT,
   pred_goles_equ1 INT,
   pred_goles_equ2 INT,
-  predic_final VARCHAR(255),
+  predic_final VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno),
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Relación Registra (N-N entre Admin y Resultado)
 CREATE TABLE IF NOT EXISTS Registra (
@@ -89,23 +90,24 @@ CREATE TABLE IF NOT EXISTS Registra (
   PRIMARY KEY (id_admin, id_res),
   FOREIGN KEY (id_admin) REFERENCES Admin(id_admin),
   FOREIGN KEY (id_res) REFERENCES Resultado(id_res)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-INSERT INTO Equipos (nombre) VALUES 
+-- Inserción de datos
+INSERT INTO Equipo (nombre_equipo) VALUES 
 ('Argentina'),
 ('Bolivia'),
 ('Brasil'),
-('Canadá'),
+('Canada'),
 ('Chile'),
 ('Colombia'),
 ('Costa Rica'),
 ('Ecuador'),
 ('Estados Unidos'),
 ('Jamaica'),
-('México'),
-('Panamá'),
+('Mexico'),
+('Panama'),
 ('Paraguay'),
-('Perú'),
+('Peru'),
 ('Uruguay'),
 ('Venezuela');
 
@@ -125,12 +127,28 @@ INSERT INTO Locacion (nombre_estadio, ciudad, estado) VALUES
 ('Inter&Co Stadium', 'Orlando', 'FL'),
 ('Levi’s® Stadium', 'Santa Clara', 'CA');
 
-INSERT INTO Partido (fecha, fase, id_loc, id_equipo1, id_equipo2) VALUES 
-('2024-06-20', 'Grupo A', 1, 1, 4),
-('2024-06-21', 'Grupo A', 5, 14, 5),
-('2024-06-22', 'Grupo B', 9, 11, 10),
-('2024-06-22', 'Grupo B', 14, 8, 16),
-('2024-06-23', 'Grupo C', 5, 9, 2),
-('2024-06-23', 'Grupo C', 2, 15, 12),
-('2024-06-21', 'Grupo D', 10, 3, 7),
-('2024-06-21', 'Grupo D', 9, 6, 13);
+INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES 
+('2024-06-20', 'Grupo A', 1, 4, 1),
+('2024-06-21', 'Grupo A', 14, 5, 5),
+('2024-06-22', 'Grupo B', 11, 10,9),
+('2024-06-22', 'Grupo B', 8, 16, 14),
+('2024-06-23', 'Grupo C', 9, 2, 5),
+('2024-06-23', 'Grupo C', 15, 12, 2),
+('2024-06-24', 'Grupo D', 3, 7, 10),
+('2024-06-24', 'Grupo D', 6, 13, 9),
+('2024-06-25', 'Grupo A', 5, 1, 7),
+('2024-06-25', 'Grupo A', 14, 4, 11),
+('2024-06-26', 'Grupo B', 16, 11, 10),
+('2024-06-26', 'Grupo B', 8, 10, 12),
+('2024-06-27', 'Grupo C', 12, 9, 1),
+('2024-06-27', 'Grupo C', 15, 2, 7),
+('2024-06-28', 'Grupo D', 13, 3, 12),
+('2024-06-28', 'Grupo D', 6, 7, 8),
+('2024-06-29', 'Grupo A', 1, 14, 2),
+('2024-06-29', 'Grupo A', 4, 5, 13),
+('2024-06-30', 'Grupo B', 11, 8, 8),
+('2024-06-30', 'Grupo B', 10, 16, 4),
+('2024-07-01', 'Grupo C', 9, 15, 3),
+('2024-07-01', 'Grupo C', 2, 12, 13),
+('2024-07-02', 'Grupo D', 3, 6, 14),
+('2024-07-02', 'Grupo D', 7, 13, 4);

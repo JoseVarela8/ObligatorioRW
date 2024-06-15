@@ -2,10 +2,11 @@
 <div class="main-container">
   <header class="main-header">
       <nav class="nav-bar">
-          <a href="#grupo-a">Grupo A</a>
+          <a href="#fase_de_grupos">Fase de Grupos</a>
+<!-- 
           <a href="#grupo-b">Grupo B</a>
           <a href="#grupo-c">Grupo C</a>
-          <a href="#grupo-d">Grupo D</a>
+          <a href="#grupo-d">Grupo D</a> -->
           <a href="#cuartos">Cuartos</a>
           <a href="#semifinal">Semifinal</a>
           <a href="#final">Final</a>
@@ -13,7 +14,7 @@
   </header>
 
   <section id="grupo-a" class="group-section">
-      <h2>GRUPO A</h2>
+      <h2>Fase de Grupos</h2>
       <div class="prediction-cards">
           <div class="prediction-card" *ngFor="let match of matches">
               <div class="card-header">
@@ -22,8 +23,8 @@
               </div>
               <div class="teams">
                   <div class="team">
-                      <img [src]="match.team1.flag" [alt]="match.team1.name">
-                      <span>{{ match.team1.name }}</span>
+                    <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+                    <span>{{ match.team1.name }}</span>
                   </div>
                   <div class="score-controls">
                       <button (click)="increaseScore(match.team1)">+</button>
@@ -36,8 +37,8 @@
                       <button (click)="decreaseScore(match.team2)">-</button>
                   </div>
                   <div class="team">
-                      <img [src]="match.team2.flag" [alt]="match.team2.name">
-                      <span>{{ match.team2.name }}</span>
+                    <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+                    <span>{{ match.team2.name }}</span>
                   </div>
               </div>
               <div class="card-footer">
@@ -46,3 +47,4 @@
           </div>
       </div>
   </section>
+</div>
