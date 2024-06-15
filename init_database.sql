@@ -127,12 +127,28 @@ INSERT INTO Locacion (nombre_estadio, ciudad, estado) VALUES
 ('Inter&Co Stadium', 'Orlando', 'FL'),
 ('Levi’s® Stadium', 'Santa Clara', 'CA');
 
-INSERT INTO Partido (fecha, fase, id_loc, id_equipo1, id_equipo2) VALUES 
-('2024-06-20', 'Grupo A', 1, 1, 4),
-('2024-06-21', 'Grupo A', 5, 14, 5),
-('2024-06-22', 'Grupo B', 9, 11, 10),
-('2024-06-22', 'Grupo B', 14, 8, 16),
-('2024-06-23', 'Grupo C', 5, 9, 2),
-('2024-06-23', 'Grupo C', 2, 15, 12),
-('2024-06-21', 'Grupo D', 10, 3, 7),
-('2024-06-21', 'Grupo D', 9, 6, 13);
+INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES 
+('2024-06-20', 'Grupo A', 1, 4, 1),
+('2024-06-21', 'Grupo A', 14, 5, 5),
+('2024-06-22', 'Grupo B', 11, 10,9),
+('2024-06-22', 'Grupo B', 8, 16, 14),
+('2024-06-23', 'Grupo C', 9, 2, 5),
+('2024-06-23', 'Grupo C', 15, 12, 2),
+('2024-06-24', 'Grupo D', 3, 7, 10),
+('2024-06-24', 'Grupo D', 6, 13, 9),
+('2024-06-25', 'Grupo A', 5, 1, 7),
+('2024-06-25', 'Grupo A', 14, 4, 11),
+('2024-06-26', 'Grupo B', 16, 11, 10),
+('2024-06-26', 'Grupo B', 8, 10, 12),
+('2024-06-27', 'Grupo C', 12, 9, 1),
+('2024-06-27', 'Grupo C', 15, 2, 7),
+('2024-06-28', 'Grupo D', 13, 3, 12),
+('2024-06-28', 'Grupo D', 6, 7, 8),
+('2024-06-29', 'Grupo A', 1, 14, 2),
+('2024-06-29', 'Grupo A', 4, 5, 13),
+('2024-06-30', 'Grupo B', 11, 8, 8),
+('2024-06-30', 'Grupo B', 10, 16, 4),
+('2024-07-01', 'Grupo C', 9, 15, 3),
+('2024-07-01', 'Grupo C', 2, 12, 13),
+('2024-07-02', 'Grupo D', 3, 6, 14),
+('2024-07-02', 'Grupo D', 7, 13, 4);
