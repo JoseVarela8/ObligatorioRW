@@ -22,8 +22,8 @@
               </div>
               <div class="teams">
                   <div class="team">
-                      <img [src]="match.team1.flag" [alt]="match.team1.name">
-                      <span>{{ match.team1.name }}</span>
+                    <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+                    <span>{{ match.team1.name }}</span>
                   </div>
                   <div class="score-controls">
                       <button (click)="increaseScore(match.team1)">+</button>
@@ -36,8 +36,8 @@
                       <button (click)="decreaseScore(match.team2)">-</button>
                   </div>
                   <div class="team">
-                      <img [src]="match.team2.flag" [alt]="match.team2.name">
-                      <span>{{ match.team2.name }}</span>
+                    <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+                    <span>{{ match.team2.name }}</span>
                   </div>
               </div>
               <div class="card-footer">
@@ -46,3 +46,4 @@
           </div>
       </div>
   </section>
+</div>

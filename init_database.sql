@@ -1,64 +1,65 @@
-CREATE DATABASE IF NOT EXISTS PencaUCU;
+CREATE DATABASE IF NOT EXISTS PencaUCU CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE PencaUCU;
 
 -- Tabla Usuario
 CREATE TABLE IF NOT EXISTS Usuario (
   id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_usuario VARCHAR(255),
-  contrasena VARCHAR(255),
-  mail VARCHAR(255)
-);
+  nombre_usuario VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  contrasena VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  mail VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Admin
 CREATE TABLE IF NOT EXISTS Admin (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Carrera
 CREATE TABLE IF NOT EXISTS Carrera (
   id_carrera INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_carrera VARCHAR(255)
-);
+  nombre_carrera VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Alumno
 CREATE TABLE IF NOT EXISTS Alumno (
+  id_alumno INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   id_carrera INT,
   puntaje INT,
-  pred_champ VARCHAR(255),
-  pred_subchamp VARCHAR(255),
+  pred_champ VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  pred_subchamp VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario),
   FOREIGN KEY (id_carrera) REFERENCES Carrera(id_carrera)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Equipo
 CREATE TABLE IF NOT EXISTS Equipo (
   id_equipo INT AUTO_INCREMENT PRIMARY KEY,
-  nombre_equipo VARCHAR(255)
-);
+  nombre_equipo VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Locacion
 CREATE TABLE IF NOT EXISTS Locacion (
   id_loc INT AUTO_INCREMENT PRIMARY KEY,
-  estado VARCHAR(255),
-  ciudad VARCHAR(255),
-  nombre_estadio VARCHAR(255)
-);
+  estado VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  ciudad VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  nombre_estadio VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Partido
 CREATE TABLE IF NOT EXISTS Partido (
   id_partido INT AUTO_INCREMENT PRIMARY KEY,
   fecha DATE,
-  fase VARCHAR(255),
+  fase VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   id_loc INT,
   id_equipo1 INT,
   id_equipo2 INT,
   FOREIGN KEY (id_loc) REFERENCES Locacion(id_loc),
   FOREIGN KEY (id_equipo1) REFERENCES Equipo(id_equipo),
   FOREIGN KEY (id_equipo2) REFERENCES Equipo(id_equipo)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Resultado
 CREATE TABLE IF NOT EXISTS Resultado (
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS Resultado (
   goles_equipo1 INT,
   goles_equipo2 INT,
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Prediccion
 CREATE TABLE IF NOT EXISTS Prediccion (
@@ -77,10 +78,10 @@ CREATE TABLE IF NOT EXISTS Prediccion (
   id_partido INT,
   pred_goles_equ1 INT,
   pred_goles_equ2 INT,
-  predic_final VARCHAR(255),
+  predic_final VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno),
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Relación Registra (N-N entre Admin y Resultado)
 CREATE TABLE IF NOT EXISTS Registra (
@@ -89,23 +90,24 @@ CREATE TABLE IF NOT EXISTS Registra (
   PRIMARY KEY (id_admin, id_res),
   FOREIGN KEY (id_admin) REFERENCES Admin(id_admin),
   FOREIGN KEY (id_res) REFERENCES Resultado(id_res)
-);
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-INSERT INTO Equipos (nombre) VALUES 
+-- Inserción de datos
+INSERT INTO Equipo (nombre_equipo) VALUES 
 ('Argentina'),
 ('Bolivia'),
 ('Brasil'),
-('Canadá'),
+('Canada'),
 ('Chile'),
 ('Colombia'),
 ('Costa Rica'),
 ('Ecuador'),
 ('Estados Unidos'),
 ('Jamaica'),
-('México'),
-('Panamá'),
+('Mexico'),
+('Panama'),
 ('Paraguay'),
-('Perú'),
+('Peru'),
 ('Uruguay'),
 ('Venezuela');
 
