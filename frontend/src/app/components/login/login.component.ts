@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-login',
@@ -9,30 +11,29 @@ import { Component } from '@angular/core';
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  alumnos: any[] = [];
 
-  constructor(private http: HttpClient){}
+  constructor(private http: HttpClient, private router: Router){}
 
   ngOnInit(): void {
-    this.getAlumnos();
-  }
 
-  getAlumnos(): void {
-    this.http.get<any[]>('http://localhost:3000/datos').subscribe({
-      next: data => {
-        this.alumnos = data;
-      },
-      error: error => {
-        console.error('Error fetching alumnos data:', error);
-      }
-    });
   }
   
-
   onSubmit() {
-    // Aquí puedes añadir la lógica para el inicio de sesión, por ejemplo, hacer una llamada a una API
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
-    // Añade aquí la lógica para validar y manejar el inicio de sesión
+    this.http.post<any>('http://localhost:3000/login', { username: this.username, password: this.password }).subscribe({
+      next: response => {
+        if (response.role === 'admin') {
+          this.router.navigate(['/stadiums']);
+        } else if (response.role === 'alumno') {
+          this.router.navigate(['/main']);
+        }
+      },
+      error: error => {
+        if (error.status === 401) {
+          alert('Usuario o contraseña incorrecta');
+        } else {
+          console.error('Error during login:', error);
+        }
+      }
+    });
   }
 }

@@ -1,32 +1,15 @@
 <div class="login-container">
-    <form (ngSubmit)="onSubmit()">
-      <h2>Iniciar Sesión</h2>
-      <div class="form-group">
-        <label for="username">Nombre de usuario</label>
-        <input type="text" id="username" [(ngModel)]="username" name="username" required>
-      </div>
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" [(ngModel)]="password" name="password" required>
-      </div>
-      <button type="submit">Ingresar</button>
-    </form>
-    <h2>Lista de Alumnos</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Valor</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let alumno of alumnos">
-            <td>{{ alumno.id }}</td>
-            <td>{{ alumno.nombre }}</td>
-            <td>{{ alumno.valor }}</td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
+  <form (ngSubmit)="onSubmit()">
+    <h2>Iniciar Sesión</h2>
+    <div class="form-group">
+      <label for="username">Nombre de usuario</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required>
+    </div>
+    <button type="submit">Ingresar</button>
+  </form>
+</div>
   
