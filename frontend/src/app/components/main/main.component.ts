@@ -99,7 +99,7 @@ export class MainComponent implements OnInit {
   }
 
   isValidPrediction(match: any): boolean {
-    return match.team1.score >= 0 && match.team2.score >= 0;
+    return match.team1.score !== '-' && match.team2.score !== '-' && match.team1.score >= 0 && match.team2.score >= 0;
   }
 
   submitPrediction(match: any): void {
