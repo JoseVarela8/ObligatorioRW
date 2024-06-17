@@ -23,14 +23,14 @@
             <span>{{ match.team1.name }}</span>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team1)" [disabled]="match.predictionEntered">+</button>
+            <button (click)="increaseScore(match.team1)" >+</button>
             <span class="score">{{ match.team1.score }}</span>
-            <button (click)="decreaseScore(match.team1)" [disabled]="match.predictionEntered">-</button>
+            <button (click)="decreaseScore(match.team1)" >-</button>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team2)" [disabled]="match.predictionEntered">+</button>
+            <button (click)="increaseScore(match.team2)" >+</button>
             <span class="score">{{ match.team2.score }}</span>
-            <button (click)="decreaseScore(match.team2)" [disabled]="match.predictionEntered">-</button>
+            <button (click)="decreaseScore(match.team2)" >-</button>
           </div>
           <div class="team">
             <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
@@ -41,9 +41,12 @@
             <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <span *ngIf="match.predictionEntered">Predicción ya realizada</span>
+          <!-- <span *ngIf="match.predictionEntered">Predicción ya realizada</span> -->
           <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
             Ingresar Predicción
+          </button>
+          <button *ngIf="match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+            Modificar Predicción
           </button>
         </div>
       </div>

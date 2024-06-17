@@ -62,6 +62,23 @@ app.post('/predicciones', (req, res) => {
   });
 });
 
+app.get('/predicciones/:id_alumno', (req, res) => {
+  const { id_alumno } = req.params;
+
+  const sql = `
+    SELECT p.id_partido, pred.pred_goles_equ1, pred.pred_goles_equ2, pred.id_alumno
+    FROM Prediccion pred
+    JOIN Partido p ON pred.id_partido = p.id_partido
+    WHERE pred.id_alumno = ?
+  `;
+  db.query(sql, [id_alumno], (err, results) => {
+    if (err) {
+      console.error('Error fetching predictions from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching predictions' });
+    }
+    res.json(results);
+  });
+});
 
 app.get('/partidos', (req, res) => {
   const sql = `

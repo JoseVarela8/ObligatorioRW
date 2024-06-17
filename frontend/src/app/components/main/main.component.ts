@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MainComponent implements OnInit {
   matches: any[] = [];
+  predictions: any[] = [];
   flagUrls: { [key: string]: string } = {
     'Argentina': 'assets/argentina.png',
     'Bolivia': 'assets/bolivia.png',
@@ -31,6 +32,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMatches();
+    this.getPredictions();
   }
 
   getMatches(): void {
@@ -45,11 +47,40 @@ export class MainComponent implements OnInit {
           stadium: match.nombre_estadio,
           predictionEntered: false
         }));
+        // Update matches with predictions if available
+        this.updateMatchesWithPredictions();
       },
       error: error => {
         console.error('Error fetching matches data:', error);
       }
     });
+  }
+
+  getPredictions(): void {
+    //Hay que modificar el "1" por la lógica que obtiene el ID del usuario logueado
+    this.http.get<any[]>(`http://localhost:3000/predicciones/${1}`).subscribe({
+      next: data => {
+        this.predictions = data;
+        // Update matches with predictions if available
+        this.updateMatchesWithPredictions();
+      },
+      error: error => {
+        console.error('Error fetching predictions data:', error);
+      }
+    });
+  }
+
+  updateMatchesWithPredictions(): void {
+    if (this.matches.length > 0 && this.predictions.length > 0) {
+      this.predictions.forEach(prediction => {
+        const match = this.matches.find(m => m.id_partido === prediction.id_partido);
+        if (match) {
+          match.team1.score = prediction.pred_goles_equ1;
+          match.team2.score = prediction.pred_goles_equ2;
+          match.predictionEntered = true;
+        }
+      });
+    }
   }
 
   increaseScore(team: any): void {
@@ -86,7 +117,7 @@ export class MainComponent implements OnInit {
         } else {
           alert('Predicción ingresada con éxito.');
         }
-        // match.predictionEntered = true;
+        match.predictionEntered = true;
       },
       error: error => {
         console.error('Error submitting prediction:', error);
