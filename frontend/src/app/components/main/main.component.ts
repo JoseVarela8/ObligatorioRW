@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrl: './main.component.css'
+  styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
   matches: any[] = [];
@@ -37,11 +37,13 @@ export class MainComponent implements OnInit {
     this.http.get<any[]>('http://localhost:3000/partidos').subscribe({
       next: data => {
         this.matches = data.map(match => ({
+          id_partido: match.id_partido,
           date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString()}`,
           group: match.fase,
           team1: { name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
           team2: { name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
-          stadium: match.nombre_estadio
+          stadium: match.nombre_estadio,
+          predictionEntered: false
         }));
       },
       error: error => {
@@ -52,10 +54,9 @@ export class MainComponent implements OnInit {
 
   increaseScore(team: any): void {
     if (team.score === '-') {
-      team.score = 1;
-    } else {
-      team.score++;
+      team.score = 0;
     }
+    team.score++;
   }
 
   decreaseScore(team: any): void {
@@ -65,4 +66,32 @@ export class MainComponent implements OnInit {
       team.score = '-';
     }
   }
+
+  isValidPrediction(match: any): boolean {
+    return match.team1.score >= 0 && match.team2.score >= 0;
+  }
+
+  submitPrediction(match: any): void {
+    const prediction = {
+      id_partido: match.id_partido,
+      pred_goles_equ1: match.team1.score,
+      pred_goles_equ2: match.team2.score,
+      id_alumno: 1 // Debes reemplazar esto con el ID del alumno actual
+    };
+  
+    this.http.post('http://localhost:3000/predicciones', prediction, { responseType: 'json' }).subscribe({
+      next: (response: any) => {
+        if (response.message === 'Prediction updated successfully') {
+          alert('Predicción actualizada.');
+        } else {
+          alert('Predicción ingresada con éxito.');
+        }
+        // match.predictionEntered = true;
+      },
+      error: error => {
+        console.error('Error submitting prediction:', error);
+        alert('Hubo un error al ingresar la predicción. Por favor, inténtalo de nuevo.');
+      }
+    });
+  }  
 }

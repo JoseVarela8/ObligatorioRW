@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS Locacion (
 -- Tabla Partido
 CREATE TABLE IF NOT EXISTS Partido (
   id_partido INT AUTO_INCREMENT PRIMARY KEY,
-  fecha DATE,
+  fecha DATETIME,
   fase VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   id_loc INT,
   id_equipo1 INT,
@@ -74,14 +74,14 @@ CREATE TABLE IF NOT EXISTS Resultado (
 -- Tabla Prediccion
 CREATE TABLE IF NOT EXISTS Prediccion (
   id_pred INT AUTO_INCREMENT PRIMARY KEY,
-  id_alumno INT,
   id_partido INT,
   pred_goles_equ1 INT,
   pred_goles_equ2 INT,
-  predic_final VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
-  FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno),
-  FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
-) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  id_alumno INT,
+  FOREIGN KEY (id_partido) REFERENCES Partido(id_partido),
+  FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
+);
+
 
 -- Relación Registra (N-N entre Admin y Resultado)
 CREATE TABLE IF NOT EXISTS Registra (
@@ -128,27 +128,60 @@ INSERT INTO Locacion (nombre_estadio, ciudad, estado) VALUES
 ('Levi’s® Stadium', 'Santa Clara', 'CA');
 
 INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES 
-('2024-06-20', 'Grupo A', 1, 4, 1),
-('2024-06-21', 'Grupo A', 14, 5, 5),
-('2024-06-22', 'Grupo B', 11, 10,9),
-('2024-06-22', 'Grupo B', 8, 16, 14),
-('2024-06-23', 'Grupo C', 9, 2, 5),
-('2024-06-23', 'Grupo C', 15, 12, 2),
-('2024-06-24', 'Grupo D', 3, 7, 10),
-('2024-06-24', 'Grupo D', 6, 13, 9),
-('2024-06-25', 'Grupo A', 5, 1, 7),
-('2024-06-25', 'Grupo A', 14, 4, 11),
-('2024-06-26', 'Grupo B', 16, 11, 10),
-('2024-06-26', 'Grupo B', 8, 10, 12),
-('2024-06-27', 'Grupo C', 12, 9, 1),
-('2024-06-27', 'Grupo C', 15, 2, 7),
-('2024-06-28', 'Grupo D', 13, 3, 12),
-('2024-06-28', 'Grupo D', 6, 7, 8),
-('2024-06-29', 'Grupo A', 1, 14, 2),
-('2024-06-29', 'Grupo A', 4, 5, 13),
-('2024-06-30', 'Grupo B', 11, 8, 8),
-('2024-06-30', 'Grupo B', 10, 16, 4),
-('2024-07-01', 'Grupo C', 9, 15, 3),
-('2024-07-01', 'Grupo C', 2, 12, 13),
-('2024-07-02', 'Grupo D', 3, 6, 14),
-('2024-07-02', 'Grupo D', 7, 13, 4);
+('2024-06-20 20:00:00', 'Grupo A', 1, 4, 1),
+('2024-06-21 19:00:00', 'Grupo A', 14, 5, 5),
+('2024-06-22 20:00:00', 'Grupo B', 11, 10, 9),
+('2024-06-22 15:00:00', 'Grupo B', 8, 16, 14),
+('2024-06-23 17:00:00', 'Grupo C', 9, 2, 5),
+('2024-06-23 21:00:00', 'Grupo C', 15, 12, 2),
+('2024-06-24 18:00:00', 'Grupo D', 3, 7, 10),
+('2024-06-24 17:00:00', 'Grupo D', 6, 13, 9),
+('2024-06-25 21:00:00', 'Grupo A', 5, 1, 7),
+('2024-06-25 17:00:00', 'Grupo A', 14, 4, 11),
+('2024-06-26 18:00:00', 'Grupo B', 16, 11, 10),
+('2024-06-26 15:00:00', 'Grupo B', 8, 10, 12),
+('2024-06-27 18:00:00', 'Grupo C', 12, 9, 1),
+('2024-06-27 21:00:00', 'Grupo C', 15, 2, 7),
+('2024-06-28 18:00:00', 'Grupo D', 13, 3, 12),
+('2024-06-28 15:00:00', 'Grupo D', 6, 7, 8),
+('2024-06-29 20:00:00', 'Grupo A', 1, 14, 2),
+('2024-06-29 20:00:00', 'Grupo A', 4, 5, 13),
+('2024-06-30 17:00:00', 'Grupo B', 11, 8, 8),
+('2024-06-30 19:00:00', 'Grupo B', 10, 16, 4),
+('2024-07-01 20:00:00', 'Grupo C', 9, 15, 3),
+('2024-07-01 21:00:00', 'Grupo C', 2, 12, 13),
+('2024-07-02 18:00:00', 'Grupo D', 3, 6, 14),
+('2024-07-02 20:00:00', 'Grupo D', 7, 13, 4);
+
+-- Insertar Carreras
+INSERT INTO Carrera (nombre_carrera) VALUES
+('Ingeniería Informática'),
+('Ingeniería Industrial'),
+('Medicina'),
+('Nutrición'),
+('Psicología'),
+('Economía'),
+('Contador Público'),
+('Negocios Internacionales'),
+('Comunicación'),
+('Derecho');
+
+-- Insertar Usuarios
+INSERT INTO Usuario (nombre_usuario, contrasena, mail) VALUES
+('admin1', 'admin', 'admin1@example.com'),
+('admin2', 'admin', 'admin2@example.com'),
+('estudiante1', 'estudiante', 'estudiante1@example.com');
+
+-- Insertar Admins
+INSERT INTO Admin (id_usuario) VALUES
+((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'admin1')),
+((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'admin2'));
+
+-- Insertar Alumno
+INSERT INTO Alumno (id_usuario, id_carrera, puntaje, pred_champ, pred_subchamp) VALUES
+((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante1'), 
+ (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingeniería Informática'),
+ 0, -- Puntaje inicial
+ 'Bolivia', -- Predicción de campeón inicial
+ 'Paraguay' -- Predicción de subcampeón inicial
+);
