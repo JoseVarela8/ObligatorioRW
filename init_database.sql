@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS Usuario (
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Tabla Admin
-CREATE TABLE IF NOT EXISTS Admin (
+CREATE TABLE IF NOT EXISTS Administrador (
   id_admin INT AUTO_INCREMENT PRIMARY KEY,
   id_usuario INT,
   FOREIGN KEY (id_usuario) REFERENCES Usuario(id_usuario)
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS Registra (
   id_admin INT,
   id_res INT,
   PRIMARY KEY (id_admin, id_res),
-  FOREIGN KEY (id_admin) REFERENCES Admin(id_admin),
+  FOREIGN KEY (id_admin) REFERENCES Administrador(id_admin),
   FOREIGN KEY (id_res) REFERENCES Resultado(id_res)
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -173,7 +173,7 @@ INSERT INTO Usuario (nombre_usuario, contrasena, mail) VALUES
 ('estudiante1', 'estudiante', 'estudiante1@example.com');
 
 -- Insertar Admins
-INSERT INTO Admin (id_usuario) VALUES
+INSERT INTO Administrador (id_usuario) VALUES
 ((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'admin1')),
 ((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'admin2'));
 

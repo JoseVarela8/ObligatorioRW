@@ -24,6 +24,51 @@ db.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
+// Ruta para el login
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  const sql = 'SELECT * FROM Usuario WHERE nombre_usuario = ? AND contrasena = ?';
+  db.query(sql, [username, password], (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching data from MySQL' });
+    }
+
+    if (results.length === 0) {
+      return res.status(401).json({ error: 'Usuario o contraseña incorrecta' });
+    }
+
+    const user = results[0];
+    
+    const adminSql = 'SELECT * FROM Administrador WHERE id_usuario = ?';
+    db.query(adminSql, [user.id_usuario], (err, adminResults) => {
+      if (err) {
+        console.error('Error fetching data from MySQL:', err);
+        return res.status(500).json({ error: 'Error fetching data from MySQL' });
+      }
+
+      if (adminResults.length > 0) {
+        return res.json({ role: 'admin' });
+      } else {
+        const alumnoSql = 'SELECT * FROM Alumno WHERE id_usuario = ?';
+        db.query(alumnoSql, [user.id_usuario], (err, alumnoResults) => {
+          if (err) {
+            console.error('Error fetching data from MySQL:', err);
+            return res.status(500).json({ error: 'Error fetching data from MySQL' });
+          }
+
+          if (alumnoResults.length > 0) {
+            return res.json({ role: 'alumno' });
+          } else {
+            return res.status(403).json({ error: 'No tienes asignado un rol en el sistema' });
+          }
+        });
+      }
+    });
+  });
+});
+
 app.post('/predicciones', (req, res) => {
   const { id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno } = req.body;
 
