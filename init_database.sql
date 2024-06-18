@@ -155,15 +155,15 @@ INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES
 
 -- Insertar Carreras
 INSERT INTO Carrera (nombre_carrera) VALUES
-('Ingeniería Informática'),
-('Ingeniería Industrial'),
+('Ingenieria Informatica'),
+('Ingenieria Industrial'),
 ('Medicina'),
-('Nutrición'),
-('Psicología'),
-('Economía'),
-('Contador Público'),
+('Nutricion'),
+('Psicologia'),
+('Economia'),
+('Contador Publico'),
 ('Negocios Internacionales'),
-('Comunicación'),
+('Comunicacion'),
 ('Derecho');
 
 -- Insertar Usuarios

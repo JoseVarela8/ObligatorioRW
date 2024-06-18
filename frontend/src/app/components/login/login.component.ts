@@ -16,7 +16,7 @@ export class LoginComponent {
 
   ngOnInit(): void {
 
-  }
+  } 
 
   onSubmit() {
     this.http.post<any>('http://localhost:3000/login', { username: this.username, password: this.password }).subscribe({
