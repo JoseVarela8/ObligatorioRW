@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
       }
 
       if (adminResults.length > 0) {
-        return res.json({ role: 'admin' });
+        return res.json({ role: 'admin', userId: user.id_usuario });
       } else {
         const alumnoSql = 'SELECT * FROM Alumno WHERE id_usuario = ?';
         db.query(alumnoSql, [user.id_usuario], (err, alumnoResults) => {
@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
           }
 
           if (alumnoResults.length > 0) {
-            return res.json({ role: 'alumno' });
+            return res.json({ role: 'alumno', userId: user.id_usuario });
           } else {
             return res.status(403).json({ error: 'No tienes asignado un rol en el sistema' });
           }
@@ -68,6 +68,7 @@ app.post('/login', (req, res) => {
     });
   });
 });
+
 
 app.post('/predicciones', (req, res) => {
   const { id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno } = req.body;
