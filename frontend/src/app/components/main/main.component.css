@@ -30,10 +30,12 @@ body {
 
 .nav-bar a:hover {
     background-color: #444;
+    border-radius: 5px;
 }
 
 .group-section {
     margin-top: 20px;
+    border-radius: 5px;
 }
 
 .group-section h2 {
@@ -41,6 +43,7 @@ body {
     color: white;
     padding: 10px;
     text-align: center;
+    border-radius: 5px;
 }
 
 .prediction-cards {
@@ -48,14 +51,13 @@ body {
     flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    padding: 10px;
 }
 
 .prediction-card {
     background-color: #f0eeee;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    width: 310px;
     padding: 20px;
 }
 
@@ -144,8 +146,21 @@ body {
     padding: 10px;
     cursor: pointer;
     border-radius: 5px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size:medium;
 }
 
 .submit-button:hover {
     background-color: darkgreen;
+}
+
+.submit-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+h1, h2, h3, p, a, span {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size:medium;
 }

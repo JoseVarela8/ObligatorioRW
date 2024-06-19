@@ -40,7 +40,7 @@ export class MainComponent implements OnInit {
       next: data => {
         this.matches = data.map(match => ({
           id_partido: match.id_partido,
-          date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString()}`,
+          date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           group: match.fase,
           team1: { name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
           team2: { name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
@@ -99,7 +99,7 @@ export class MainComponent implements OnInit {
   }
 
   isValidPrediction(match: any): boolean {
-    return match.team1.score !== '-' && match.team2.score !== '-' && match.team1.score >= 0 && match.team2.score >= 0;
+    return match.team1.score !== '-' && match.team2.score !== '-'
   }
 
   submitPrediction(match: any): void {
