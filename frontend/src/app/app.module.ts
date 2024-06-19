@@ -12,6 +12,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { StadiumsComponent } from './components/stadiums/stadiums.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { FilterByPhasePipe } from './filter-by-phase.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -31,10 +33,12 @@ const routes: Routes = [
     MainComponent,
     RegisterComponent,
     StadiumsComponent,
-    TeamsComponent
+    TeamsComponent,
+    FilterByPhasePipe
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     RouterModule.forRoot(routes)  // Asegúrate de usar forRoot para configurar las rutas principales

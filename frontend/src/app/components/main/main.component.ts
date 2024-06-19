@@ -9,6 +9,12 @@ import { HttpClient } from '@angular/common/http';
 export class MainComponent implements OnInit {
   matches: any[] = [];
   predictions: any[] = [];
+  sectionVisible: { [key: string]: boolean } = {
+    faseDeGrupos: true,
+    cuartos: false,
+    semifinal: false,
+    final: false
+  };
   flagUrls: { [key: string]: string } = {
     'Argentina': 'assets/argentina.png',
     'Bolivia': 'assets/bolivia.png',
@@ -35,6 +41,9 @@ export class MainComponent implements OnInit {
     this.getPredictions();
   }
 
+  toggleSection(section: 'faseDeGrupos' | 'cuartos' | 'semifinal' | 'final'): void {
+    this.sectionVisible[section] = !this.sectionVisible[section];
+  }
   getMatches(): void {
     this.http.get<any[]>('http://localhost:3000/partidos').subscribe({
       next: data => {
@@ -47,7 +56,6 @@ export class MainComponent implements OnInit {
           stadium: match.nombre_estadio,
           predictionEntered: false
         }));
-        // Update matches with predictions if available
         this.updateMatchesWithPredictions();
       },
       error: error => {
@@ -61,7 +69,6 @@ export class MainComponent implements OnInit {
     this.http.get<any[]>(`http://localhost:3000/predicciones/${1}`).subscribe({
       next: data => {
         this.predictions = data;
-        // Update matches with predictions if available
         this.updateMatchesWithPredictions();
       },
       error: error => {

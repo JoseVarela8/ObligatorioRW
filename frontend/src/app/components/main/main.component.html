@@ -2,17 +2,17 @@
 <div class="main-container">
   <header class="main-header">
     <nav class="nav-bar">
-      <a href="#fase_de_grupos">Fase de Grupos</a>
+      <a href="#fase-de-grupos">Fase de Grupos</a>
       <a href="#cuartos">Cuartos</a>
       <a href="#semifinal">Semifinal</a>
       <a href="#final">Final</a>
     </nav>
   </header>
 
-  <section id="grupo-a" class="group-section">
-    <h2>Fase de Grupos</h2>
-    <div class="prediction-cards">
-      <div class="prediction-card" *ngFor="let match of matches">
+  <section id="fase-de-grupo" class="group-section">
+    <h2 (click)="toggleSection('faseDeGrupos')">Fase de Grupos</h2>
+    <div class="prediction-cards" *ngIf="sectionVisible['faseDeGrupos']">
+      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Grupo'">
         <div class="card-header">
           <span>{{ match.date }}</span>
           <span class="group-label">{{ match.group }}</span>
@@ -49,6 +49,32 @@
             Modificar Predicción
           </button>
         </div>
+      </div>
+    </div>
+  </section>
+  <section id="cuartos" class="group-section">
+    <h2 (click)="toggleSection('cuartos')">Cuartos</h2>
+    <div class="prediction-cards" *ngIf="sectionVisible['cuartos']">
+      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Cuartos'">
+        <!-- Match card content -->
+      </div>
+    </div>
+  </section>
+
+  <section id="semifinal" class="group-section">
+    <h2 (click)="toggleSection('semifinal')">Semifinal</h2>
+    <div class="prediction-cards" *ngIf="sectionVisible['semifinal']">
+      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Semifinal'">
+        <!-- Match card content -->
+      </div>
+    </div>
+  </section>
+
+  <section id="final" class="group-section">
+    <h2 (click)="toggleSection('final')">Final</h2>
+    <div class="prediction-cards" *ngIf="sectionVisible['final']">
+      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Final'">
+        <!-- Match card content -->
       </div>
     </div>
   </section>
