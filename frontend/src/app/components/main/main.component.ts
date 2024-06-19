@@ -1,10 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
+  animations: [
+    trigger('toggleAnimation', [
+      state('true', style({ height: '*', opacity: 1, overflow: 'hidden' })),
+      state('false', style({ height: '0px', opacity: 0, overflow: 'hidden' })),
+      transition('false <=> true', [animate('0.3s ease-in-out')]),
+    ])
+  ]
 })
 export class MainComponent implements OnInit {
   matches: any[] = [];
@@ -41,7 +49,7 @@ export class MainComponent implements OnInit {
     this.getPredictions();
   }
 
-  toggleSection(section: 'faseDeGrupos' | 'cuartos' | 'semifinal' | 'final'): void {
+  toggleSection(section: keyof typeof this.sectionVisible): void {
     this.sectionVisible[section] = !this.sectionVisible[section];
   }
   getMatches(): void {
