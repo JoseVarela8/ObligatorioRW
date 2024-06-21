@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
       }
 
       if (adminResults.length > 0) {
-        return res.json({ role: 'admin' });
+        return res.json({ role: 'admin', userId: user.id_usuario });
       } else {
         const alumnoSql = 'SELECT * FROM Alumno WHERE id_usuario = ?';
         db.query(alumnoSql, [user.id_usuario], (err, alumnoResults) => {
@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
           }
 
           if (alumnoResults.length > 0) {
-            return res.json({ role: 'alumno' });
+            return res.json({ role: 'alumno', userId: user.id_usuario });
           } else {
             return res.status(403).json({ error: 'No tienes asignado un rol en el sistema' });
           }
@@ -68,6 +68,7 @@ app.post('/login', (req, res) => {
     });
   });
 });
+
 
 app.post('/predicciones', (req, res) => {
   const { id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno, ganador_pred } = req.body;
@@ -142,6 +143,71 @@ app.get('/partidos', (req, res) => {
     res.json(results);
   });
 });
+
+// Ruta para el registro
+app.post('/register', (req, res) => {
+  const { username, email, password, id_carrera, pred_champ, pred_subchamp } = req.body;
+
+  // Verificar si el correo ya está registrado
+  const checkEmailSql = 'SELECT * FROM Usuario WHERE mail = ?';
+  db.query(checkEmailSql, [email], (err, results) => {
+    if (err) {
+      console.error('Error checking email in MySQL:', err);
+      return res.status(500).json({ error: 'Error checking email' });
+    }
+
+    if (results.length > 0) {
+      return res.status(409).json({ error: 'Correo electrónico ya registrado' });
+    }
+
+    // Insertar nuevo usuario
+    const insertUserSql = 'INSERT INTO Usuario (nombre_usuario, contrasena, mail) VALUES (?, ?, ?)';
+    db.query(insertUserSql, [username, password, email], (err, result) => {
+      if (err) {
+        console.error('Error inserting user into MySQL:', err);
+        return res.status(500).json({ error: 'Error inserting user' });
+      }
+
+      const userId = result.insertId;
+
+      // Insertar nuevo alumno
+      const insertAlumnoSql = 'INSERT INTO Alumno (id_usuario, id_carrera, puntaje, pred_champ, pred_subchamp) VALUES (?, ?, 0, ?, ?)';
+      db.query(insertAlumnoSql, [userId, id_carrera, pred_champ, pred_subchamp], (err, result) => {
+        if (err) {
+          console.error('Error inserting student into MySQL:', err);
+          return res.status(500).json({ error: 'Error inserting student' });
+        }
+
+        res.status(201).json({ message: 'Registro exitoso' });
+      });
+    });
+  });
+});
+
+// Ruta para obtener carreras
+app.get('/carreras', (req, res) => {
+  const sql = 'SELECT * FROM Carrera';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching careers from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching careers' });
+    }
+    res.json(results);
+  });
+});
+
+// Ruta para obtener equipos
+app.get('/equipos', (req, res) => {
+  const sql = 'SELECT * FROM Equipo';
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching teams from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching teams' });
+    }
+    res.json(results);
+  });
+});
+
 
 app.get('/resultados', (req, res) => {
   const sql = `

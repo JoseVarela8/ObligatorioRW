@@ -16,18 +16,20 @@ export class LoginComponent {
 
   ngOnInit(): void {
 
-  }
-  
+  } 
+
   onSubmit() {
     this.http.post<any>('http://localhost:3000/login', { username: this.username, password: this.password }).subscribe({
-      next: response => {
+      next: (response: { role: string; userId: string; }) => {
         if (response.role === 'admin') {
+          sessionStorage.setItem('userId', response.userId);
           this.router.navigate(['/stadiums']);
         } else if (response.role === 'alumno') {
+          sessionStorage.setItem('userId', response.userId);
           this.router.navigate(['/main']);
         }
       },
-      error: error => {
+      error: (error: { status: number; }) => {
         if (error.status === 401) {
           alert('Usuario o contraseña incorrecta');
         } else {
@@ -36,4 +38,9 @@ export class LoginComponent {
       }
     });
   }
+
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+
 }
