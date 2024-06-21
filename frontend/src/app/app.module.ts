@@ -15,6 +15,7 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { FilterByPhasePipe } from './filter-by-phase.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdministratorComponent } from './components/administrator/administrator.component';
+import { RankingComponent } from './components/ranking/ranking.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -37,7 +38,8 @@ const routes: Routes = [
     StadiumsComponent,
     TeamsComponent,
     FilterByPhasePipe,
-    AdministratorComponent
+    AdministratorComponent,
+    RankingComponent
   ],
   imports: [
     BrowserModule,
