@@ -14,6 +14,7 @@ import { TeamsComponent } from './components/teams/teams.component';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { FilterByPhasePipe } from './filter-by-phase.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AdministratorComponent } from './components/administrator/administrator.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'calendar', component: CalendarComponent },
   { path: 'stadiums', component: StadiumsComponent },
-  { path: 'teams', component: TeamsComponent }
+  { path: 'teams', component: TeamsComponent },
+  { path: 'administrator', component: AdministratorComponent }
 ];
 
 @NgModule({
@@ -34,7 +36,8 @@ const routes: Routes = [
     RegisterComponent,
     StadiumsComponent,
     TeamsComponent,
-    FilterByPhasePipe
+    FilterByPhasePipe,
+    AdministratorComponent
   ],
   imports: [
     BrowserModule,

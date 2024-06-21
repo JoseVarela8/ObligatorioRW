@@ -1,0 +1,174 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../../../assets/fondo.jpg");
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-header {
+    background-color: #000;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+}
+
+.nav-bar a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.nav-bar a:hover {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+.group-section {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.group-section h2 {
+    background-color: #0a2481;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.result-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.result-card {
+    background-color: #f0eeee;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 310px;
+    padding: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.group-label {
+    background-color: #000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team {
+    text-align: center;
+}
+
+.team img {
+    width: 50px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.score-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.score-controls button {
+    background-color: #0a2481;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px 0;
+    width: 30px;
+    height: 30px;
+}
+
+.card-footer {
+    text-align: center;
+    margin-top: 10px;
+    background-color: #f0eeee;
+    color: white;
+    border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+    .result-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .result-card {
+        width: 100%;
+    }
+}
+
+.stadinfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #5a595998;
+    text-align: center;
+}
+
+.submit-button {
+    background-color: green;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: medium;
+}
+
+.submit-button:hover {
+    background-color: darkgreen;
+}
+
+.submit-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+}
+
+h1,
+h2,
+h3,
+p,
+a,
+span {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: medium;
+}

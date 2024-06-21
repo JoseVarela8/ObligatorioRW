@@ -70,9 +70,9 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/predicciones', (req, res) => {
-  const { id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno } = req.body;
+  const { id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno, ganador_pred } = req.body;
 
-  if (!id_partido || pred_goles_equ1 === undefined || pred_goles_equ2 === undefined || !id_alumno) {
+  if (!id_partido || pred_goles_equ1 === undefined || pred_goles_equ2 === undefined || !id_alumno || !ganador_pred) {
     return res.status(400).json({ error: 'Invalid request data' });
   }
 
@@ -86,7 +86,7 @@ app.post('/predicciones', (req, res) => {
     if (results.length > 0) {
       // Predicción existente, actualizar
       const updatePredictionSql = 'UPDATE Prediccion SET pred_goles_equ1 = ?, pred_goles_equ2 = ? WHERE id_partido = ? AND id_alumno = ?';
-      db.query(updatePredictionSql, [pred_goles_equ1, pred_goles_equ2, id_partido, id_alumno], (err, result) => {
+      db.query(updatePredictionSql, [pred_goles_equ1, pred_goles_equ2, ganador_pred, id_partido, id_alumno], (err, result) => {
         if (err) {
           console.error('Error updating prediction in MySQL:', err);
           return res.status(500).json({ error: 'Error updating prediction' });
@@ -95,8 +95,8 @@ app.post('/predicciones', (req, res) => {
       });
     } else {
       // No existe predicción, insertar nueva
-      const insertPredictionSql = 'INSERT INTO Prediccion (id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno) VALUES (?, ?, ?, ?)';
-      db.query(insertPredictionSql, [id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno], (err, result) => {
+      const insertPredictionSql = 'INSERT INTO Prediccion (id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno, ganador_pred) VALUES (?, ?, ?, ?, ?)';
+      db.query(insertPredictionSql, [id_partido, pred_goles_equ1, pred_goles_equ2, id_alumno, ganador_pred], (err, result) => {
         if (err) {
           console.error('Error inserting prediction into MySQL:', err);
           return res.status(500).json({ error: 'Error inserting prediction' });
@@ -140,6 +140,62 @@ app.get('/partidos', (req, res) => {
       return res.status(500).json({ error: 'Error fetching data' });
     }
     res.json(results);
+  });
+});
+
+app.get('/resultados', (req, res) => {
+  const sql = `
+    SELECT r.id_partido, r.ganador, r.goles_equipo1, r.goles_equipo2
+    FROM Resultado r
+    JOIN Partido p ON r.id_partido = p.id_partido
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching results from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching results' });
+    }
+    res.json(results);
+  });
+});
+
+app.post('/resultados', (req, res) => {
+  const { id_partido, goles_equipo1, goles_equipo2, ganador } = req.body;
+
+  if (!id_partido || goles_equipo1 === undefined || goles_equipo2 === undefined || ganador === null) {
+      console.error('Invalid request data:', req.body);
+      return res.status(400).json({ error: 'Invalid request data' });
+  }
+
+  console.log('Received result data:', req.body);
+
+  const checkResultSql = 'SELECT * FROM Resultado WHERE id_partido = ?';
+  db.query(checkResultSql, [id_partido], (err, results) => {
+      if (err) {
+          console.error('Error checking result in MySQL:', err);
+          return res.status(500).json({ error: 'Error checking result' });
+      }
+
+      if (results.length > 0) {
+          // Resultado existente, actualizar
+          const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
+          db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
+              if (err) {
+                  console.error('Error updating result in MySQL:', err);
+                  return res.status(500).json({ error: 'Error updating result' });
+              }
+              res.status(200).json({ message: 'Result updated successfully' });
+          });
+      } else {
+          // No existe resultado, insertar nuevo
+          const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
+          db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
+              if (err) {
+                  console.error('Error inserting result into MySQL:', err);
+                  return res.status(500).json({ error: 'Error inserting result' });
+              }
+              res.status(201).json({ message: 'Result inserted successfully' });
+          });
+      }
   });
 });
 
