@@ -47,7 +47,7 @@ body {
     cursor: pointer;
 }
 
-.prediction-cards {
+.result-cards {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -56,7 +56,7 @@ body {
     transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.prediction-card {
+.result-card {
     background-color: #f0eeee;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -123,12 +123,12 @@ body {
 }
 
 @media (max-width: 768px) {
-    .prediction-cards {
+    .result-cards {
         flex-direction: column;
         align-items: center;
     }
 
-    .prediction-card {
+    .result-card {
         width: 100%;
     }
 }

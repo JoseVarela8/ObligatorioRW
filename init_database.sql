@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS Partido (
 CREATE TABLE IF NOT EXISTS Resultado (
   id_res INT AUTO_INCREMENT PRIMARY KEY,
   id_partido INT,
-  ganador INT,
+  ganador VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   goles_equipo1 INT,
   goles_equipo2 INT,
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido)
@@ -78,6 +78,7 @@ CREATE TABLE IF NOT EXISTS Prediccion (
   pred_goles_equ1 INT,
   pred_goles_equ2 INT,
   id_alumno INT,
+  ganador_pred VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   FOREIGN KEY (id_partido) REFERENCES Partido(id_partido),
   FOREIGN KEY (id_alumno) REFERENCES Alumno(id_alumno)
 );
