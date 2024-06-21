@@ -9,10 +9,10 @@
     </nav>
   </header>
 
-  <section id="fase-de-grupo" class="group-section">
+  <section id="fase-de-grupos" class="group-section">
     <h2 (click)="toggleSection('faseDeGrupos')">Fase de Grupos</h2>
-    <div class="prediction-cards" [@toggleAnimation]="sectionVisible['faseDeGrupos']">
-      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Grupo'">
+    <div class="result-cards" [@toggleAnimation]="sectionVisible['faseDeGrupos']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: 'Grupo'">
         <div class="card-header">
           <span>{{ match.date }}</span>
           <span class="group-label">{{ match.group }}</span>
@@ -41,12 +41,11 @@
             <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <!-- <span *ngIf="match.predictionEntered">Predicción ya realizada</span> -->
-          <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Ingresar Predicción
+          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
+            Ingresar Resultado
           </button>
-          <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Modificar Predicción
+          <button *ngIf="match.resultEntered" class="submit-button" (click)="submitResult(match)">
+            Modificar Resultado
           </button>
         </div>
       </div>
@@ -54,8 +53,8 @@
   </section>
   <section id="cuartos" class="group-section">
     <h2 (click)="toggleSection('cuartos')">Cuartos</h2>
-    <div class="prediction-cards" [@toggleAnimation]="sectionVisible['cuartos']">
-      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Cuartos'">
+    <div class="result-cards" [@toggleAnimation]="sectionVisible['cuartos']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: 'Cuartos'">
         <!-- Match card content -->
       </div>
     </div>
@@ -63,8 +62,8 @@
 
   <section id="semifinal" class="group-section">
     <h2 (click)="toggleSection('semifinal')">Semifinal</h2>
-    <div class="prediction-cards" [@toggleAnimation]="sectionVisible['semifinal']">
-      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Semifinal'">
+    <div class="result-cards" [@toggleAnimation]="sectionVisible['semifinal']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: 'Semifinal'">
         <!-- Match card content -->
       </div>
     </div>
@@ -72,8 +71,8 @@
 
   <section id="final" class="group-section">
     <h2 (click)="toggleSection('final')">Final</h2>
-    <div class="prediction-cards" [@toggleAnimation]="sectionVisible['final']">
-      <div class="prediction-card" *ngFor="let match of matches | filterByPhase: 'Final'">
+    <div class="result-cards" [@toggleAnimation]="sectionVisible['final']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: 'Final'">
         <!-- Match card content -->
       </div>
     </div>

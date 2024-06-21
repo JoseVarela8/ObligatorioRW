@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css'],
+  selector: 'app-administrator',
+  templateUrl: './administrator.component.html',
+  styleUrl: './administrator.component.css',
   animations: [
     trigger('toggleAnimation', [
       state('true', style({ height: '*', opacity: 1, overflow: 'hidden' })),
@@ -14,9 +14,9 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ])
   ]
 })
-export class MainComponent implements OnInit {
+export class AdministratorComponent implements OnInit {
   matches: any[] = [];
-  predictions: any[] = [];
+  results: any[] = [];
   sectionVisible: { [key: string]: boolean } = {
     faseDeGrupos: true,
     cuartos: false,
@@ -46,12 +46,13 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMatches();
-    this.getPredictions();
+    this.getResults();
   }
 
   toggleSection(section: keyof typeof this.sectionVisible): void {
     this.sectionVisible[section] = !this.sectionVisible[section];
   }
+
   getMatches(): void {
     this.http.get<any[]>('http://localhost:3000/partidos').subscribe({
       next: data => {
@@ -59,12 +60,12 @@ export class MainComponent implements OnInit {
           id_partido: match.id_partido,
           date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           group: match.fase,
-          team1: { name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
-          team2: { name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
+          team1: { id: match.id_equipo1, name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
+          team2: { id: match.id_equipo2, name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
           stadium: match.nombre_estadio,
-          predictionEntered: false
+          resultEntered: false
         }));
-        this.updateMatchesWithPredictions();
+        this.updateMatchesWithResults();
       },
       error: error => {
         console.error('Error fetching matches data:', error);
@@ -72,27 +73,26 @@ export class MainComponent implements OnInit {
     });
   }
 
-  getPredictions(): void {
-    //Hay que modificar el "1" por la lógica que obtiene el ID del usuario logueado
-    this.http.get<any[]>(`http://localhost:3000/predicciones/${1}`).subscribe({
+  getResults(): void {
+    this.http.get<any[]>('http://localhost:3000/resultados').subscribe({
       next: data => {
-        this.predictions = data;
-        this.updateMatchesWithPredictions();
+        this.results = data;
+        this.updateMatchesWithResults();
       },
       error: error => {
-        console.error('Error fetching predictions data:', error);
+        console.error('Error fetching results data:', error);
       }
     });
   }
 
-  updateMatchesWithPredictions(): void {
-    if (this.matches.length > 0 && this.predictions.length > 0) {
-      this.predictions.forEach(prediction => {
-        const match = this.matches.find(m => m.id_partido === prediction.id_partido);
+  updateMatchesWithResults(): void {
+    if (this.matches.length > 0 && this.results.length > 0) {
+      this.results.forEach(result => {
+        const match = this.matches.find(m => m.id_partido === result.id_partido);
         if (match) {
-          match.team1.score = prediction.pred_goles_equ1;
-          match.team2.score = prediction.pred_goles_equ2;
-          match.predictionEntered = true;
+          match.team1.score = result.goles_equipo1;
+          match.team2.score = result.goles_equipo2;
+          match.resultEntered = true;
         }
       });
     }
@@ -112,42 +112,39 @@ export class MainComponent implements OnInit {
       team.score = '-';
     }
   }
-
-  isValidPrediction(match: any): boolean {
-    return match.team1.score !== '-' && match.team2.score !== '-'
-  }
-
-  submitPrediction(match: any): void {
-    const prediction = {
+  submitResult(match: any): void {
+    const result = {
       id_partido: match.id_partido,
-      pred_goles_equ1: match.team1.score,
-      pred_goles_equ2: match.team2.score,
-      ganador_pred: this.getWinner(match.team1, match.team2),
-      id_alumno: 1 // Debes reemplazar esto con el ID del alumno actual
+      goles_equipo1: match.team1.score,
+      goles_equipo2: match.team2.score,
+      ganador: '-'
     };
-  
-    this.http.post('http://localhost:3000/predicciones', prediction, { responseType: 'json' }).subscribe({
+
+    if (result.goles_equipo1 > result.goles_equipo2) {
+      result.ganador = match.team1.name;
+    } else if (result.goles_equipo1 < result.goles_equipo2) {
+      result.ganador = match.team2.name;
+    } else {
+      result.ganador = 'Empate';
+    }
+    console.log('ID1', match.team1.id);
+    console.log('ID2', match.team2.id);
+    console.log('Team1', match.team1);
+    console.log('Submitting result:', result);
+
+    this.http.post('http://localhost:3000/resultados', result, { responseType: 'json' }).subscribe({
       next: (response: any) => {
-        if (response.message === 'Prediction updated successfully') {
-          alert('Predicción actualizada.');
+        if (response.message === 'Result updated successfully') {
+          alert('Resultado actualizado.');
         } else {
-          alert('Predicción ingresada con éxito.');
+          alert('Resultado ingresado con éxito.');
         }
-        match.predictionEntered = true;
+        match.resultEntered = true;
       },
       error: error => {
-        console.error('Error submitting prediction:', error);
-        alert('Hubo un error al ingresar la predicción. Por favor, inténtalo de nuevo.');
+        console.error('Error submitting result:', error);
+        alert('Hubo un error al ingresar el resultado. Por favor, inténtalo de nuevo.');
       }
     });
   }
-  getWinner(team1: any, team2: any): string {
-    if (team1.score > team2.score) {
-      return team1.name;
-    } else if (team1.score < team2.score) {
-      return team2.name;
-    } else {
-      return 'Empate';
-    }
-  }  
 }
