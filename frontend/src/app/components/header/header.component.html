@@ -1,29 +1,34 @@
 <div class="grid-header">
     <div class="grid-item">
-        <div class="site-branding ast-site-identity" itemtype="https://schema.org/Organization"
-            itemscope="itemscope">
-            <span class="site-logo-img"><a href="/main" rel="home"><img src="../../../assets/logo.png"
-                class="custom-logo responsive-logo" alt="CONMEBOL Copa America" decoding="async"></a></span>
-            <div class="ast-site-title-wrap">
-            </div>
-        </div>
+      <div class="site-branding ast-site-identity" itemtype="https://schema.org/Organization" itemscope="itemscope">
+        <span class="site-logo-img"><a href="/main" rel="home"><img src="../../../assets/logo.png" class="custom-logo responsive-logo" alt="CONMEBOL Copa America" decoding="async"></a></span>
+        <div class="ast-site-title-wrap"></div>
+      </div>
     </div>
     <div class="grid-item-center">
-        <div class="ast-site-title-wrap">
-            <h1 class="site-title" itemprop="name">
-                PencaUCU
-            </h1>
-        </div>
+      <div class="ast-site-title-wrap">
+        <h1 class="site-title" itemprop="name">
+          PencaUCU
+        </h1>
+      </div>
     </div>
     <div class="grid-item-right">
-        <div class="dropdown">
-            <button class="dropbtn">&#9776;</button>
-            <div class="dropdown-content">
-                <a href="/main">Home</a>
-                <a href="/calendar">Calendario</a>
-                <a href="/teams">Equipos</a>
-                <a href="/stadiums">Estadios</a>
-            </div>
+      <div class="user-info">
+        <div class="user-dropdown">
+            <button class="user-dropbtn">{{ username }}</button>
+            <div class="user-dropdown-content">
+                <button class="logout-button" (click)="logout()">Cerrar sesión</button>
+            </div>        
         </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">&#9776;</button>
+        <div class="dropdown-content">
+          <a href="/main">Home</a>
+          <a href="/calendar">Calendario</a>
+          <a href="/teams">Equipos</a>
+          <a href="/stadiums">Estadios</a>
+        </div>
+      </div>
     </div>
 </div>

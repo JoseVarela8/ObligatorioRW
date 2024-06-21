@@ -5,9 +5,9 @@
     padding: 1em 0;
     display: flex;
     align-items: center;
-    justify-content: center; /* Centramos todos los elementos inicialmente */
+    justify-content: center;
     text-align: center;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en varias líneas si es necesario */
+    flex-wrap: wrap;
     position: relative;
 }
 
@@ -20,32 +20,45 @@
 
 .grid-item {
     flex: 1;
-    justify-content: flex-start; /* Alineamos a la izquierda */
+    justify-content: flex-start;
 }
 
 .grid-item-center {
-    flex: 2; /* Hacemos que el centro ocupe más espacio */
+    flex: 2;
 }
 
 .grid-item-right {
     flex: 1;
     justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Separación entre elementos de la derecha */
 }
 
 .responsive-logo {
-    max-width: 150px; /* Ajusta este valor según sea necesario */
+    max-width: 150px;
     height: auto;
 }
 
 .site-title {
-    font-size: 2rem; /* Ajusta el tamaño del título */
+    font-size: 2rem;
 }
 
 .dropbtn {
     background-color: #c72929;
     color: white;
-    padding: 10px 16px; /* Ajusta el padding según sea necesario */
+    padding: 10px 16px;
     font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+.user-dropbtn {
+    background-color: #c72929;
+    color: white;
+    padding: 6px 12px;
+    font-size: 1rem;
     border: none;
     cursor: pointer;
     border-radius: 12px;
@@ -53,30 +66,30 @@
 
 @media (max-width: 1200px) {
     .responsive-logo {
-        max-width: 120px; /* Ajusta el tamaño de la imagen en pantallas medianas */
+        max-width: 120px;
     }
 
     .site-title {
-        font-size: 1.5rem; /* Ajusta el tamaño del título en pantallas medianas */
+        font-size: 1.5rem;
     }
 
-    .dropbtn {
-        padding: 8px 12px; /* Ajusta el padding del botón en pantallas medianas */
+    .dropbtn, .user-dropbtn {
+        padding: 8px 12px;
         font-size: 1.3rem;
     }
 }
 
 @media (max-width: 600px) {
     .responsive-logo {
-        max-width: 80px; /* Ajusta el tamaño de la imagen en pantallas pequeñas */
+        max-width: 80px;
     }
 
     .site-title {
-        font-size: 1.2rem; /* Ajusta el tamaño del título en pantallas pequeñas */
+        font-size: 1.2rem;
     }
 
-    .dropbtn {
-        padding: 6px 10px; /* Ajusta el padding del botón en pantallas pequeñas */
+    .dropbtn, .user-dropbtn {
+        padding: 6px 10px;
         font-size: 1.2rem;
     }
 }
@@ -92,8 +105,8 @@ body {
 .grid-container {
     width: 100%;
     overflow-x: hidden;
-    margin: 0 auto; /* Centra el contenido horizontalmente */
-    padding: 0; /* Elimina el padding adicional */
+    margin: 0 auto;
+    padding: 0;
 }
 
 /* Cuadrícula */
@@ -147,7 +160,59 @@ a {
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
-/* Estilos del menú desplegable */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.username {
+    font-size: 1rem;
+    color: white;
+}
+
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.user-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    right: 0;
+    left: auto;
+    border-radius: 12px;
+}
+
+.user-dropdown-content button {
+    color: black;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+.user-dropdown-content button:hover {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+}
+
+.user-dropdown:hover .user-dropdown-content {
+    display: block;
+}
+
+.user-dropdown:hover .user-dropbtn {
+    background-color: #b02222;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -165,14 +230,18 @@ a {
     border-radius: 12px;
 }
 
-.dropdown-content a {
+.dropdown-content a, .dropdown-content button {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    background: none;
+    border: none;
+    text-align: left;
+    width: 100%;
 }
 
-.dropdown-content a:hover {
+.dropdown-content a:hover, .dropdown-content button:hover {
     background-color: #f1f1f1;
     border-radius: 16px;
 }
@@ -182,20 +251,5 @@ a {
 }
 
 .dropdown:hover .dropbtn {
-    background-color: #c72929;
-}
-
-/* Bordes redondeados */
-.dropbtn {
-    background-color: #c72929;
-    color: white;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    border-radius: 12px;
-}
-
-.elementor-widget-container {
-    margin-top: 10px; /* Añadir margen superior para separar las dos imágenes si es necesario */
+    background-color: #b02222;
 }

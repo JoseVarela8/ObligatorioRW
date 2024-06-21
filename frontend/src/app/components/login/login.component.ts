@@ -20,16 +20,17 @@ export class LoginComponent {
 
   onSubmit() {
     this.http.post<any>('http://localhost:3000/login', { username: this.username, password: this.password }).subscribe({
-      next: (response: { role: string; userId: string; }) => {
-        if (response.role === 'admin') {
-          sessionStorage.setItem('userId', response.userId);
-          this.router.navigate(['/stadiums']);
-        } else if (response.role === 'alumno') {
-          sessionStorage.setItem('userId', response.userId);
+      next: (response: { role: string; userId: string; alumnoId?: number }) => {
+        sessionStorage.setItem('userId', response.userId);
+        sessionStorage.setItem('username', this.username);
+        if (response.role === 'alumno' && response.alumnoId) {
+          sessionStorage.setItem('alumnoId', response.alumnoId.toString());
           this.router.navigate(['/main']);
+        } else if (response.role === 'admin') {
+          this.router.navigate(['/administrator']);
         }
       },
-      error: (error: { status: number; }) => {
+      error: (error: { status: number }) => {
         if (error.status === 401) {
           alert('Usuario o contraseña incorrecta');
         } else {

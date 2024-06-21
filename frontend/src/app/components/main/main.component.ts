@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-main',
@@ -73,16 +74,20 @@ export class MainComponent implements OnInit {
   }
 
   getPredictions(): void {
-    //Hay que modificar el "1" por la lógica que obtiene el ID del usuario logueado
-    this.http.get<any[]>(`http://localhost:3000/predicciones/${1}`).subscribe({
-      next: data => {
-        this.predictions = data;
-        this.updateMatchesWithPredictions();
-      },
-      error: error => {
-        console.error('Error fetching predictions data:', error);
-      }
-    });
+    const alumnoId = Number(sessionStorage.getItem('alumnoId'));
+    if (alumnoId) {
+      this.http.get<any[]>(`http://localhost:3000/predicciones/${alumnoId}`).subscribe({
+        next: data => {
+          this.predictions = data;
+          this.updateMatchesWithPredictions();
+        },
+        error: error => {
+          console.error('Error fetching predictions data:', error);
+        }
+      });
+    } else {
+      console.error('Alumno ID not found in session storage.');
+    }
   }
 
   updateMatchesWithPredictions(): void {
@@ -102,7 +107,9 @@ export class MainComponent implements OnInit {
     if (team.score === '-') {
       team.score = 0;
     }
-    team.score++;
+    else{
+      team.score++;
+    }
   }
 
   decreaseScore(team: any): void {
@@ -118,14 +125,19 @@ export class MainComponent implements OnInit {
   }
 
   submitPrediction(match: any): void {
+    const alumnoId = Number(sessionStorage.getItem('alumnoId'));
+    if (!alumnoId) {
+      alert('Alumno ID not found. Please log in again.');
+      return;
+    }
     const prediction = {
       id_partido: match.id_partido,
       pred_goles_equ1: match.team1.score,
       pred_goles_equ2: match.team2.score,
       ganador_pred: this.getWinner(match.team1, match.team2),
-      id_alumno: 1 // Debes reemplazar esto con el ID del alumno actual
+      id_alumno: alumnoId
     };
-  
+    
     this.http.post('http://localhost:3000/predicciones', prediction, { responseType: 'json' }).subscribe({
       next: (response: any) => {
         if (response.message === 'Prediction updated successfully') {
@@ -149,5 +161,5 @@ export class MainComponent implements OnInit {
     } else {
       return 'Empate';
     }
-  }  
+  }
 }

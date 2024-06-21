@@ -59,7 +59,7 @@ app.post('/login', (req, res) => {
           }
 
           if (alumnoResults.length > 0) {
-            return res.json({ role: 'alumno', userId: user.id_usuario });
+            return res.json({ role: 'alumno', userId: user.id_usuario, alumnoId: alumnoResults[0].id_alumno });
           } else {
             return res.status(403).json({ error: 'No tienes asignado un rol en el sistema' });
           }

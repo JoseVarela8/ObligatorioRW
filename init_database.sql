@@ -171,7 +171,9 @@ INSERT INTO Carrera (nombre_carrera) VALUES
 INSERT INTO Usuario (nombre_usuario, contrasena, mail) VALUES
 ('admin1', 'admin', 'admin1@example.com'),
 ('admin2', 'admin', 'admin2@example.com'),
-('estudiante1', 'estudiante', 'estudiante1@example.com');
+('estudiante1', 'estudiante', 'estudiante1@example.com'),
+('estudiante2', 'estudiante', 'estudiante2@example.com'),
+('estudiante3', 'estudiante', 'estudiante3@example.com');
 
 -- Insertar Admins
 INSERT INTO Administrador (id_usuario) VALUES
@@ -184,5 +186,11 @@ INSERT INTO Alumno (id_usuario, id_carrera, puntaje, pred_champ, pred_subchamp) 
  (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingeniería Informática'),
  0, -- Puntaje inicial
  'Bolivia', -- Predicción de campeón inicial
+ 'Paraguay' -- Predicción de subcampeón inicial
+),
+((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante2'), 
+ (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingeniería Informática'),
+ 0, -- Puntaje inicial
+ 'Venezuela', -- Predicción de campeón inicial
  'Paraguay' -- Predicción de subcampeón inicial
 );
