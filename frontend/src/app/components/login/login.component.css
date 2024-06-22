@@ -1,44 +1,75 @@
+body {
+  background-color: #f0f0f0; 
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ucu-logo {
+  max-width: 150px; 
+  height: auto;
+}
+
 .login-container {
-    width: 300px;
-    margin: 100px auto;
-    padding: 30px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  
-  button {
-    width: 100%;
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+  width: 300px;
+  margin: 0 auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f0eeee;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0a2481; /* Color del texto */
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+button.btn-ingresar {
+  background-color: #28a745; 
+  color: white;
+}
+
+button.btn-ingresar:hover {
+  background-color: #218838;
+}
+
+button.btn-registrarse {
+  background-color: #007BFF; 
+  color: white;
+}
+
+button.btn-registrarse:hover {
+  background-color: #0056b3;
+}
+
+h1, h2, h3, p, a, span, label {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
