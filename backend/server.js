@@ -265,6 +265,27 @@ app.post('/resultados', (req, res) => {
   });
 });
 
+// Ruta para obtener el ranking de alumnos
+app.get('/ranking', (req, res) => {
+  const sql = `
+    SELECT 
+      Usuario.nombre_usuario,
+      Carrera.nombre_carrera,
+      Alumno.puntaje
+    FROM Alumno
+    JOIN Usuario ON Alumno.id_usuario = Usuario.id_usuario
+    JOIN Carrera ON Alumno.id_carrera = Carrera.id_carrera
+    ORDER BY Alumno.puntaje DESC
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching ranking from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching ranking' });
+    }
+    res.json(results);
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

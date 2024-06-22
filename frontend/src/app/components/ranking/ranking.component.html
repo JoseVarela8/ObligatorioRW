@@ -1,2 +1,23 @@
 <app-header></app-header>
-<p>ranking works!</p>
+<div class="ranking-container">
+    <h2>Ranking</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Posición</th>
+          <th>Nombre</th>
+          <th>Carrera</th>
+          <th>Puntaje</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let alumno of ranking; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ alumno.nombre_usuario }}</td>
+          <td>{{ alumno.nombre_carrera }}</td>
+          <td>{{ alumno.puntaje }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
