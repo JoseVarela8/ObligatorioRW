@@ -39,7 +39,8 @@ export class AdministratorComponent implements OnInit {
     'Paraguay': 'assets/paraguay.png',
     'Peru': 'assets/peru.png',
     'Uruguay': 'assets/uruguay.png',
-    'Venezuela': 'assets/venezuela.png'
+    'Venezuela': 'assets/venezuela.png',
+    'Desconocido': 'assets/desconocido.png'
   };
 
   constructor(private http: HttpClient) { }
@@ -60,8 +61,8 @@ export class AdministratorComponent implements OnInit {
           id_partido: match.id_partido,
           date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           group: match.fase,
-          team1: { id: match.id_equipo1, name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
-          team2: { id: match.id_equipo2, name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
+          team1: { name: match.equipo1 || 'Desconocido', flag: this.flagUrls[match.equipo1] || this.flagUrls['Desconocido'], score: '-' },
+          team2: { name: match.equipo2 || 'Desconocido', flag: this.flagUrls[match.equipo2] || this.flagUrls['Desconocido'], score: '-' },
           stadium: match.nombre_estadio,
           resultEntered: false
         }));
@@ -127,10 +128,6 @@ export class AdministratorComponent implements OnInit {
     } else {
       result.ganador = 'Empate';
     }
-    console.log('ID1', match.team1.id);
-    console.log('ID2', match.team2.id);
-    console.log('Team1', match.team1);
-    console.log('Submitting result:', result);
 
     this.http.post('http://localhost:3000/resultados', result, { responseType: 'json' }).subscribe({
       next: (response: any) => {

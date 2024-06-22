@@ -128,13 +128,24 @@ app.get('/predicciones/:id_alumno', (req, res) => {
 
 app.get('/partidos', (req, res) => {
   const sql = `
-    SELECT p.id_partido, p.fecha, p.fase, l.nombre_estadio, e1.nombre_equipo AS equipo1, e2.nombre_equipo AS equipo2 
-    FROM Partido p 
-    JOIN Locacion l ON p.id_loc = l.id_loc 
-    JOIN Equipo e1 ON p.id_equipo1 = e1.id_equipo 
-    JOIN Equipo e2 ON p.id_equipo2 = e2.id_equipo
-    ORDER BY p.id_partido
-  `;
+  SELECT 
+    p.id_partido, 
+    p.fecha, 
+    p.fase, 
+    l.nombre_estadio, 
+    e1.nombre_equipo AS equipo1, 
+    e2.nombre_equipo AS equipo2 
+  FROM 
+    Partido p 
+  LEFT JOIN 
+    Locacion l ON p.id_loc = l.id_loc 
+  LEFT JOIN 
+    Equipo e1 ON p.id_equipo1 = e1.id_equipo 
+  LEFT JOIN 
+    Equipo e2 ON p.id_equipo2 = e2.id_equipo
+  ORDER BY 
+    p.id_partido
+`;;
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching data from MySQL:', err);

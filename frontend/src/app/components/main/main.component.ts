@@ -40,7 +40,8 @@ export class MainComponent implements OnInit {
     'Paraguay': 'assets/paraguay.png',
     'Peru': 'assets/peru.png',
     'Uruguay': 'assets/uruguay.png',
-    'Venezuela': 'assets/venezuela.png'
+    'Venezuela': 'assets/venezuela.png',
+    'Desconocido': 'assets/desconocido.png'
   };
 
   constructor(private http: HttpClient) { }
@@ -60,8 +61,8 @@ export class MainComponent implements OnInit {
           id_partido: match.id_partido,
           date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           group: match.fase,
-          team1: { name: match.equipo1, flag: this.flagUrls[match.equipo1], score: '-' },
-          team2: { name: match.equipo2, flag: this.flagUrls[match.equipo2], score: '-' },
+          team1: { name: match.equipo1 || 'Desconocido', flag: this.flagUrls[match.equipo1] || this.flagUrls['Desconocido'], score: '-' },
+          team2: { name: match.equipo2 || 'Desconocido', flag: this.flagUrls[match.equipo2] || this.flagUrls['Desconocido'], score: '-' },
           stadium: match.nombre_estadio,
           predictionEntered: false
         }));
@@ -71,7 +72,8 @@ export class MainComponent implements OnInit {
         console.error('Error fetching matches data:', error);
       }
     });
-  }
+  }  
+
 
   getPredictions(): void {
     const alumnoId = Number(sessionStorage.getItem('alumnoId'));

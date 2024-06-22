@@ -152,7 +152,15 @@ INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES
 ('2024-07-01 20:00:00', 'Grupo C', 9, 15, 3),
 ('2024-07-01 21:00:00', 'Grupo C', 2, 12, 13),
 ('2024-07-02 18:00:00', 'Grupo D', 3, 6, 14),
-('2024-07-02 20:00:00', 'Grupo D', 7, 13, 4);
+('2024-07-02 20:00:00', 'Grupo D', 7, 13, 4),
+('2024-07-04 20:00:00', 'Cuartos', NULL, NULL, 9),
+('2024-07-05 20:00:00', 'Cuartos', NULL, NULL, 5),
+('2024-07-06 18:00:00', 'Cuartos', NULL, NULL, 12),
+('2024-07-06 15:00:00', 'Cuartos', NULL, NULL, 8),
+('2024-07-09 20:00:00', 'Semifinal', NULL, NULL, 7),
+('2024-07-10 20:00:00', 'Semifinal', NULL, NULL, 6),
+('2024-07-13 20:00:00', 'Tercer Puesto', NULL, NULL, 6),
+('2024-07-14 20:00:00', 'Final', NULL, NULL, 2);
 
 -- Insertar Carreras
 INSERT INTO Carrera (nombre_carrera) VALUES
