@@ -139,7 +139,7 @@ export class MainComponent implements OnInit {
       ganador_pred: this.getWinner(match.team1, match.team2),
       id_alumno: alumnoId
     };
-    
+  
     this.http.post('http://localhost:3000/predicciones', prediction, { responseType: 'json' }).subscribe({
       next: (response: any) => {
         if (response.message === 'Prediction updated successfully') {
@@ -154,7 +154,7 @@ export class MainComponent implements OnInit {
         alert('Hubo un error al ingresar la predicción. Por favor, inténtalo de nuevo.');
       }
     });
-  }
+  }  
   getWinner(team1: any, team2: any): string {
     if (team1.score > team2.score) {
       return team1.name;

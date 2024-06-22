@@ -86,7 +86,7 @@ app.post('/predicciones', (req, res) => {
 
     if (results.length > 0) {
       // Predicción existente, actualizar
-      const updatePredictionSql = 'UPDATE Prediccion SET pred_goles_equ1 = ?, pred_goles_equ2 = ? WHERE id_partido = ? AND id_alumno = ?';
+      const updatePredictionSql = 'UPDATE Prediccion SET pred_goles_equ1 = ?, pred_goles_equ2 = ?, ganador_pred = ? WHERE id_partido = ? AND id_alumno = ?';
       db.query(updatePredictionSql, [pred_goles_equ1, pred_goles_equ2, ganador_pred, id_partido, id_alumno], (err, result) => {
         if (err) {
           console.error('Error updating prediction in MySQL:', err);
