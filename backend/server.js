@@ -253,23 +253,23 @@ app.post('/resultados', (req, res) => {
       }
 
       if (results.length > 0) {
-          // Resultado existente, actualizar
           const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
           db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
               if (err) {
                   console.error('Error updating result in MySQL:', err);
                   return res.status(500).json({ error: 'Error updating result' });
               }
+              updateScores(id_partido, goles_equipo1, goles_equipo2, ganador);
               res.status(200).json({ message: 'Result updated successfully' });
           });
       } else {
-          // No existe resultado, insertar nuevo
           const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
           db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
               if (err) {
                   console.error('Error inserting result into MySQL:', err);
                   return res.status(500).json({ error: 'Error inserting result' });
               }
+              updateScores(id_partido, goles_equipo1, goles_equipo2, ganador);
               res.status(201).json({ message: 'Result inserted successfully' });
           });
       }
@@ -296,6 +296,45 @@ app.get('/ranking', (req, res) => {
     res.json(results);
   });
 });
+
+// Función para actualizar los puntajes de los alumnos
+function updateScores(id_partido, goles_equipo1, goles_equipo2, ganador) {
+  const getPredictionsSql = `
+    SELECT p.id_alumno, p.pred_goles_equ1, p.pred_goles_equ2, p.ganador_pred, a.puntaje
+    FROM Prediccion p
+    JOIN Alumno a ON p.id_alumno = a.id_alumno
+    WHERE p.id_partido = ?`;
+  
+  db.query(getPredictionsSql, [id_partido], (err, predictions) => {
+    if (err) {
+      console.error('Error fetching predictions from MySQL:', err);
+      return;
+    }
+
+    predictions.forEach(prediction => {
+      let points = 0;
+
+      if (prediction.pred_goles_equ1 === goles_equipo1 && prediction.pred_goles_equ2 === goles_equipo2) {
+        points += 4; // 4 puntos por acertar los goles
+      }
+
+      if (prediction.ganador_pred === ganador) {
+        points += 2; // 2 puntos por acertar el ganador o el empate
+      }
+
+      const newScore = prediction.puntaje + points;
+
+      const updateScoreSql = 'UPDATE Alumno SET puntaje = ? WHERE id_alumno = ?';
+      db.query(updateScoreSql, [newScore, prediction.id_alumno], (err, result) => {
+        if (err) {
+          console.error('Error updating score in MySQL:', err);
+          return;
+        }
+        console.log(`Updated score for alumno ${prediction.id_alumno}: +${points} points`);
+      });
+    });
+  });
+}
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
