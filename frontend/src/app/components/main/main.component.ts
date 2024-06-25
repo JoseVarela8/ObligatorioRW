@@ -59,7 +59,7 @@ export class MainComponent implements OnInit {
       next: data => {
         this.matches = data.map(match => ({
           id_partido: match.id_partido,
-          date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} a las ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
+          date: `Fecha: ${new Date(match.fecha).toLocaleDateString()} - ${new Date(match.fecha).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
           group: match.fase,
           team1: { name: match.equipo1 || 'Desconocido', flag: this.flagUrls[match.equipo1] || this.flagUrls['Desconocido'], score: '-' },
           team2: { name: match.equipo2 || 'Desconocido', flag: this.flagUrls[match.equipo2] || this.flagUrls['Desconocido'], score: '-' },

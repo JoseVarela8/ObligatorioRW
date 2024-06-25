@@ -44,9 +44,9 @@
           <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
             Ingresar Resultado
           </button>
-          <button *ngIf="match.resultEntered" class="submit-button" (click)="submitResult(match)">
-            Modificar Resultado
-          </button>
+          <span *ngIf="match.resultEntered" class="submit-button:disabled">
+            Resultado registrado
+          </span>
         </div>
       </div>
     </div>
@@ -86,9 +86,9 @@
           <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
             Ingresar Resultado
           </button>
-          <button *ngIf="match.resultEntered" class="submit-button" (click)="submitResult(match)">
-            Modificar Resultado
-          </button>
+          <span *ngIf="match.resultEntered" class="submit-button">
+            Resultado registrado
+          </span>
         </div>
       </div>
     </div>
@@ -129,9 +129,9 @@
           <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
             Ingresar Resultado
           </button>
-          <button *ngIf="match.resultEntered" class="submit-button" (click)="submitResult(match)">
-            Modificar Resultado
-          </button>
+          <span *ngIf="match.resultEntered" class="submit-button">
+            Resultado registrado
+          </span>
         </div>
       </div>
     </div>
@@ -172,9 +172,9 @@
           <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
             Ingresar Resultado
           </button>
-          <button *ngIf="match.resultEntered" class="submit-button" (click)="submitResult(match)">
-            Modificar Resultado
-          </button>
+          <span *ngIf="match.resultEntered" class="submit-button">
+            Resultado registrado
+          </span>
         </div>
       </div>
     </div>
