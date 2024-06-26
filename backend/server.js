@@ -252,53 +252,44 @@ app.post('/resultados', (req, res) => {
           return res.status(500).json({ error: 'Error checking result' });
       }
 
-      if (results.length > 0) {
-          const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
-          db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
-              if (err) {
-                  console.error('Error updating result in MySQL:', err);
-                  return res.status(500).json({ error: 'Error updating result' });
-              }
-              updateScores(id_partido, goles_equipo1, goles_equipo2, ganador);
-              res.status(200).json({ message: 'Result updated successfully' });
-          });
-      } else {
-          const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
-          db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
-              if (err) {
-                  console.error('Error inserting result into MySQL:', err);
-                  return res.status(500).json({ error: 'Error inserting result' });
-              }
-              updateScores(id_partido, goles_equipo1, goles_equipo2, ganador);
-              res.status(201).json({ message: 'Result inserted successfully' });
-          });
-      }
-  });
-});
+      const finalCheckSql = 'SELECT fase FROM Partido WHERE id_partido = ?';
+      db.query(finalCheckSql, [id_partido], (err, matchResults) => {
+          if (err) {
+              console.error('Error checking match phase in MySQL:', err);
+              return res.status(500).json({ error: 'Error checking match phase' });
+          }
 
-// Ruta para obtener el ranking de alumnos
-app.get('/ranking', (req, res) => {
-  const sql = `
-    SELECT 
-      Usuario.nombre_usuario,
-      Carrera.nombre_carrera,
-      Alumno.puntaje
-    FROM Alumno
-    JOIN Usuario ON Alumno.id_usuario = Usuario.id_usuario
-    JOIN Carrera ON Alumno.id_carrera = Carrera.id_carrera
-    ORDER BY Alumno.puntaje DESC
-  `;
-  db.query(sql, (err, results) => {
-    if (err) {
-      console.error('Error fetching ranking from MySQL:', err);
-      return res.status(500).json({ error: 'Error fetching ranking' });
-    }
-    res.json(results);
+          const isFinal = matchResults[0]?.fase === 'Final';
+
+          if (results.length > 0) {
+              // Resultado existente, actualizar
+              const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
+              db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
+                  if (err) {
+                      console.error('Error updating result in MySQL:', err);
+                      return res.status(500).json({ error: 'Error updating result' });
+                  }
+                  updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
+                  res.status(200).json({ message: 'Result updated successfully' });
+              });
+          } else {
+              // No existe resultado, insertar nuevo
+              const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
+              db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
+                  if (err) {
+                      console.error('Error inserting result into MySQL:', err);
+                      return res.status(500).json({ error: 'Error inserting result' });
+                  }
+                  updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
+                  res.status(201).json({ message: 'Result inserted successfully' });
+              });
+          }
+      });
   });
 });
 
 // Función para actualizar los puntajes de los alumnos
-function updateScores(id_partido, goles_equipo1, goles_equipo2, ganador) {
+function updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal) {
   const getPredictionsSql = `
     SELECT p.id_alumno, p.pred_goles_equ1, p.pred_goles_equ2, p.ganador_pred, a.puntaje
     FROM Prediccion p
@@ -334,7 +325,75 @@ function updateScores(id_partido, goles_equipo1, goles_equipo2, ganador) {
       });
     });
   });
+
+  if (isFinal) {
+    updateChampionScores(ganador, id_partido);
+  }
 }
+
+// Función para actualizar los puntajes por acertar el campeón y subcampeón
+function updateChampionScores(ganador, id_partido) {
+  const getFinalTeamsSql = 'SELECT equipo1, equipo2 FROM Partido WHERE id_partido = ?';
+  db.query(getFinalTeamsSql, [id_partido], (err, results) => {
+    if (err) {
+      console.error('Error fetching final teams from MySQL:', err);
+      return;
+    }
+
+    const finalTeams = results[0];
+    const subcampeon = (ganador === finalTeams.equipo1) ? finalTeams.equipo2 : finalTeams.equipo1;
+
+    const getPredictionsSql = 'SELECT * FROM Alumno';
+    db.query(getPredictionsSql, (err, students) => {
+      if (err) {
+        console.error('Error fetching student predictions from MySQL:', err);
+        return;
+      }
+
+      students.forEach(student => {
+        let puntos = 0;
+        if (student.pred_champ === ganador) {
+          puntos += 10;
+        }
+        if (student.pred_subchamp === subcampeon) {
+          puntos += 5;
+        }
+
+        if (puntos > 0) {
+          const updatePuntajeSql = 'UPDATE Alumno SET puntaje = puntaje + ? WHERE id_alumno = ?';
+          db.query(updatePuntajeSql, [puntos, student.id_alumno], (err, result) => {
+            if (err) {
+              console.error('Error updating student score in MySQL:', err);
+            } else {
+              console.log(`Updated score for alumno ${student.id_alumno}: +${puntos} points`);
+            }
+          });
+        }
+      });
+    });
+  });
+}
+
+// Ruta para obtener el ranking de alumnos
+app.get('/ranking', (req, res) => {
+  const sql = `
+    SELECT 
+      Usuario.nombre_usuario,
+      Carrera.nombre_carrera,
+      Alumno.puntaje
+    FROM Alumno
+    JOIN Usuario ON Alumno.id_usuario = Usuario.id_usuario
+    JOIN Carrera ON Alumno.id_carrera = Carrera.id_carrera
+    ORDER BY Alumno.puntaje DESC
+  `;
+  db.query(sql, (err, results) => {
+    if (err) {
+      console.error('Error fetching ranking from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching ranking' });
+    }
+    res.json(results);
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
