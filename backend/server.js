@@ -374,6 +374,25 @@ function updateChampionScores(ganador, id_partido) {
   });
 }
 
+// Ruta para actualizar equipos en partidos
+app.post('/update-teams', (req, res) => {
+  const { id_partido, equipo1, equipo2 } = req.body;
+
+  if (!id_partido || !equipo1 || !equipo2) {
+    return res.status(400).json({ error: 'Invalid request data' });
+  }
+
+  const updateTeamsSql = 'UPDATE Partido SET id_equipo1 = (SELECT id_equipo FROM Equipo WHERE nombre_equipo = ?), id_equipo2 = (SELECT id_equipo FROM Equipo WHERE nombre_equipo = ?) WHERE id_partido = ?';
+  db.query(updateTeamsSql, [equipo1, equipo2, id_partido], (err, result) => {
+    if (err) {
+      console.error('Error updating teams in MySQL:', err);
+      return res.status(500).json({ error: 'Error updating teams' });
+    }
+    res.status(200).json({ message: 'Teams updated successfully' });
+  });
+});
+
+
 // Ruta para obtener el ranking de alumnos
 app.get('/ranking', (req, res) => {
   const sql = `

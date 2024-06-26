@@ -113,6 +113,17 @@ body {
     width: 30px;
     height: 30px;
 }
+.score-controls button:disabled {
+    background-color: #0a2481;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 2px 0;
+    width: 30px;
+    height: 30px;
+}
 
 .card-footer {
     text-align: center;
@@ -159,7 +170,7 @@ body {
 
 .submit-button:disabled {
     background-color: #666666;
-    color: #666666;
+    color: #ffffff;
     cursor: not-allowed;
 }
 

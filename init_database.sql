@@ -193,8 +193,8 @@ INSERT INTO Alumno (id_usuario, id_carrera, puntaje, pred_champ, pred_subchamp) 
 ((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante1'), 
  (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingenieria Informatica'),
  0, -- Puntaje inicial
- 'Bolivia', -- Predicción de campeón inicial
- 'Paraguay' -- Predicción de subcampeón inicial
+ 'Argentina', -- Predicción de campeón inicial
+ 'Brasil' -- Predicción de subcampeón inicial
 ),
 ((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante2'), 
  (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingenieria Informatica'),
