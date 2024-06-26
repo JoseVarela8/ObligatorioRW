@@ -239,52 +239,52 @@ app.post('/resultados', (req, res) => {
   const { id_partido, goles_equipo1, goles_equipo2, ganador } = req.body;
 
   if (!id_partido || goles_equipo1 === undefined || goles_equipo2 === undefined || ganador === null) {
-      console.error('Invalid request data:', req.body);
-      return res.status(400).json({ error: 'Invalid request data' });
+    console.error('Invalid request data:', req.body);
+    return res.status(400).json({ error: 'Invalid request data' });
   }
 
   console.log('Received result data:', req.body);
 
   const checkResultSql = 'SELECT * FROM Resultado WHERE id_partido = ?';
   db.query(checkResultSql, [id_partido], (err, results) => {
+    if (err) {
+      console.error('Error checking result in MySQL:', err);
+      return res.status(500).json({ error: 'Error checking result' });
+    }
+
+    const finalCheckSql = 'SELECT fase FROM Partido WHERE id_partido = ?';
+    db.query(finalCheckSql, [id_partido], (err, matchResults) => {
       if (err) {
-          console.error('Error checking result in MySQL:', err);
-          return res.status(500).json({ error: 'Error checking result' });
+        console.error('Error checking match phase in MySQL:', err);
+        return res.status(500).json({ error: 'Error checking match phase' });
       }
 
-      const finalCheckSql = 'SELECT fase FROM Partido WHERE id_partido = ?';
-      db.query(finalCheckSql, [id_partido], (err, matchResults) => {
+      const isFinal = matchResults[0]?.fase === 'Final';
+
+      if (results.length > 0) {
+        // Resultado existente, actualizar
+        const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
+        db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
           if (err) {
-              console.error('Error checking match phase in MySQL:', err);
-              return res.status(500).json({ error: 'Error checking match phase' });
+            console.error('Error updating result in MySQL:', err);
+            return res.status(500).json({ error: 'Error updating result' });
           }
-
-          const isFinal = matchResults[0]?.fase === 'Final';
-
-          if (results.length > 0) {
-              // Resultado existente, actualizar
-              const updateResultSql = 'UPDATE Resultado SET goles_equipo1 = ?, goles_equipo2 = ?, ganador = ? WHERE id_partido = ?';
-              db.query(updateResultSql, [goles_equipo1, goles_equipo2, ganador, id_partido], (err, result) => {
-                  if (err) {
-                      console.error('Error updating result in MySQL:', err);
-                      return res.status(500).json({ error: 'Error updating result' });
-                  }
-                  updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
-                  res.status(200).json({ message: 'Result updated successfully' });
-              });
-          } else {
-              // No existe resultado, insertar nuevo
-              const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
-              db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
-                  if (err) {
-                      console.error('Error inserting result into MySQL:', err);
-                      return res.status(500).json({ error: 'Error inserting result' });
-                  }
-                  updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
-                  res.status(201).json({ message: 'Result inserted successfully' });
-              });
+          updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
+          res.status(200).json({ message: 'Result updated successfully' });
+        });
+      } else {
+        // No existe resultado, insertar nuevo
+        const insertResultSql = 'INSERT INTO Resultado (id_partido, goles_equipo1, goles_equipo2, ganador) VALUES (?, ?, ?, ?)';
+        db.query(insertResultSql, [id_partido, goles_equipo1, goles_equipo2, ganador], (err, result) => {
+          if (err) {
+            console.error('Error inserting result into MySQL:', err);
+            return res.status(500).json({ error: 'Error inserting result' });
           }
-      });
+          updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal);
+          res.status(201).json({ message: 'Result inserted successfully' });
+        });
+      }
+    });
   });
 });
 
@@ -333,7 +333,7 @@ function updateScores(id_partido, goles_equipo1, goles_equipo2, ganador, isFinal
 
 // Función para actualizar los puntajes por acertar el campeón y subcampeón
 function updateChampionScores(ganador, id_partido) {
-  const getFinalTeamsSql = 'SELECT equipo1, equipo2 FROM Partido WHERE id_partido = ?';
+  const getFinalTeamsSql = 'SELECT id_equipo1, id_equipo2 FROM Partido WHERE id_partido = ?';
   db.query(getFinalTeamsSql, [id_partido], (err, results) => {
     if (err) {
       console.error('Error fetching final teams from MySQL:', err);
@@ -341,34 +341,56 @@ function updateChampionScores(ganador, id_partido) {
     }
 
     const finalTeams = results[0];
-    const subcampeon = (ganador === finalTeams.equipo1) ? finalTeams.equipo2 : finalTeams.equipo1;
+    const equipo1 = finalTeams.id_equipo1;
+    const equipo2 = finalTeams.id_equipo2;
 
-    const getPredictionsSql = 'SELECT * FROM Alumno';
-    db.query(getPredictionsSql, (err, students) => {
+    console.log(`Final teams for partido ${id_partido}: equipo1=${equipo1}, equipo2=${equipo2}`);
+
+    const getTeamNamesSql = 'SELECT id_equipo, nombre_equipo FROM Equipo WHERE id_equipo IN (?, ?)';
+    db.query(getTeamNamesSql, [equipo1, equipo2], (err, teamResults) => {
       if (err) {
-        console.error('Error fetching student predictions from MySQL:', err);
+        console.error('Error fetching team names from MySQL:', err);
         return;
       }
 
-      students.forEach(student => {
-        let puntos = 0;
-        if (student.pred_champ === ganador) {
-          puntos += 10;
-        }
-        if (student.pred_subchamp === subcampeon) {
-          puntos += 5;
+      const equipo1Name = teamResults.find(team => team.id_equipo === equipo1).nombre_equipo;
+      const equipo2Name = teamResults.find(team => team.id_equipo === equipo2).nombre_equipo;
+
+      console.log(`Team names for partido ${id_partido}: equipo1Name=${equipo1Name}, equipo2Name=${equipo2Name}`);
+
+      const subcampeon = (ganador === equipo1Name) ? equipo2Name : equipo1Name;
+
+      console.log(`Ganador=${ganador}, Subcampeon=${subcampeon}`);
+
+      const getPredictionsSql = 'SELECT * FROM Alumno';
+      db.query(getPredictionsSql, (err, students) => {
+        if (err) {
+          console.error('Error fetching student predictions from MySQL:', err);
+          return;
         }
 
-        if (puntos > 0) {
-          const updatePuntajeSql = 'UPDATE Alumno SET puntaje = puntaje + ? WHERE id_alumno = ?';
-          db.query(updatePuntajeSql, [puntos, student.id_alumno], (err, result) => {
-            if (err) {
-              console.error('Error updating student score in MySQL:', err);
-            } else {
-              console.log(`Updated score for alumno ${student.id_alumno}: +${puntos} points`);
-            }
-          });
-        }
+        students.forEach(student => {
+          let puntos = 0;
+          if (student.pred_champ === ganador) {
+            puntos += 10;
+          }
+          if (student.pred_subchamp === subcampeon) {
+            puntos += 5;
+          }
+
+          console.log(`Student ${student.id_alumno}: pred_champ=${student.pred_champ}, pred_subchamp=${student.pred_subchamp}, puntos=${puntos}`);
+
+          if (puntos > 0) {
+            const updatePuntajeSql = 'UPDATE Alumno SET puntaje = puntaje + ? WHERE id_alumno = ?';
+            db.query(updatePuntajeSql, [puntos, student.id_alumno], (err, result) => {
+              if (err) {
+                console.error('Error updating student score in MySQL:', err);
+              } else {
+                console.log(`Updated score for alumno ${student.id_alumno}: +${puntos} points`);
+              }
+            });
+          }
+        });
       });
     });
   });

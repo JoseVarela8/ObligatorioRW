@@ -177,7 +177,7 @@
   <section id="final" class="group-section">
     <h2 (click)="toggleSection('final')">Final</h2>
     <div class="result-cards" [@toggleAnimation]="sectionVisible['final']">
-      <div class="result-card" *ngFor="let match of matches | filterByPhase: ['Final']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: ['Tercer Puesto','Final']">
         <div class="card-header">
           <span>{{ match.date }}</span>
           <span class="group-label">{{ match.group }}</span>

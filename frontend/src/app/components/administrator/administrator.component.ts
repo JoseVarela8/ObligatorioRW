@@ -167,7 +167,7 @@ export class AdministratorComponent implements OnInit {
       goles_equipo2: match.team2.score,
       ganador: '-'
     };
-
+  
     if (result.goles_equipo1 > result.goles_equipo2) {
       result.ganador = match.team1.name;
     } else if (result.goles_equipo1 < result.goles_equipo2) {
@@ -175,7 +175,7 @@ export class AdministratorComponent implements OnInit {
     } else {
       result.ganador = 'Empate';
     }
-
+  
     this.http.post('http://localhost:3000/resultados', result, { responseType: 'json' }).subscribe({
       next: (response: any) => {
         if (response.message === 'Result updated successfully') {
