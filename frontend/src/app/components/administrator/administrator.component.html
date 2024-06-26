@@ -23,14 +23,14 @@
             <span>{{ match.team1.name }}</span>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team1)" >+</button>
+            <button (click)="increaseScore(match.team1)">+</button>
             <span class="score">{{ match.team1.score }}</span>
-            <button (click)="decreaseScore(match.team1)" >-</button>
+            <button (click)="decreaseScore(match.team1)">-</button>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team2)" >+</button>
+            <button (click)="increaseScore(match.team2)">+</button>
             <span class="score">{{ match.team2.score }}</span>
-            <button (click)="decreaseScore(match.team2)" >-</button>
+            <button (click)="decreaseScore(match.team2)">-</button>
           </div>
           <div class="team">
             <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
@@ -38,7 +38,7 @@
           </div>
         </div>
         <div class="stadinfo">
-            <span>{{ match.stadium }}</span>
+          <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
           <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
@@ -51,6 +51,7 @@
       </div>
     </div>
   </section>
+
   <section id="cuartos" class="group-section">
     <h2 (click)="toggleSection('cuartos')">Cuartos</h2>
     <div class="result-cards" [@toggleAnimation]="sectionVisible['cuartos']">
@@ -61,29 +62,47 @@
         </div>
         <div class="teams">
           <div class="team">
-            <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
-            <span>{{ match.team1.name }}</span>
+            <ng-container *ngIf="!match.team1.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 1)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team1.selected">
+              <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+              <span>{{ match.team1.name }}</span>
+            </ng-container>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team1)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team1.score }}</span>
-            <button (click)="decreaseScore(match.team1)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team2)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team2.score }}</span>
-            <button (click)="decreaseScore(match.team2)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="team">
-            <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
-            <span>{{ match.team2.name }}</span>
+            <ng-container *ngIf="!match.team2.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 2)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team2.selected">
+              <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+              <span>{{ match.team2.name }}</span>
+            </ng-container>
           </div>
         </div>
         <div class="stadinfo">
-            <span>{{ match.stadium }}</span>
+          <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
+          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)" [disabled]="!match.team1.selected || !match.team2.selected">
             Ingresar Resultado
           </button>
           <span *ngIf="match.resultEntered" class="submit-button">
@@ -104,29 +123,47 @@
         </div>
         <div class="teams">
           <div class="team">
-            <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
-            <span>{{ match.team1.name }}</span>
+            <ng-container *ngIf="!match.team1.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 1)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team1.selected">
+              <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+              <span>{{ match.team1.name }}</span>
+            </ng-container>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team1)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team1.score }}</span>
-            <button (click)="decreaseScore(match.team1)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team2)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team2.score }}</span>
-            <button (click)="decreaseScore(match.team2)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="team">
-            <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
-            <span>{{ match.team2.name }}</span>
+            <ng-container *ngIf="!match.team2.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 2)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team2.selected">
+              <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+              <span>{{ match.team2.name }}</span>
+            </ng-container>
           </div>
         </div>
         <div class="stadinfo">
-            <span>{{ match.stadium }}</span>
+          <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
+          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)" [disabled]="!match.team1.selected || !match.team2.selected">
             Ingresar Resultado
           </button>
           <span *ngIf="match.resultEntered" class="submit-button">
@@ -140,36 +177,54 @@
   <section id="final" class="group-section">
     <h2 (click)="toggleSection('final')">Final</h2>
     <div class="result-cards" [@toggleAnimation]="sectionVisible['final']">
-      <div class="result-card" *ngFor="let match of matches | filterByPhase: ['Final', 'Tercer Puesto']">
+      <div class="result-card" *ngFor="let match of matches | filterByPhase: ['Tercer Puesto','Final']">
         <div class="card-header">
           <span>{{ match.date }}</span>
           <span class="group-label">{{ match.group }}</span>
         </div>
         <div class="teams">
           <div class="team">
-            <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
-            <span>{{ match.team1.name }}</span>
+            <ng-container *ngIf="!match.team1.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 1)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team1.selected">
+              <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+              <span>{{ match.team1.name }}</span>
+            </ng-container>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team1)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team1.score }}</span>
-            <button (click)="decreaseScore(match.team1)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team1)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="score-controls">
-            <button (click)="increaseScore(match.team2)" >+</button>
+            <button class="scorBut" (click)="increaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">+</button>
             <span class="score">{{ match.team2.score }}</span>
-            <button (click)="decreaseScore(match.team2)" >-</button>
+            <button class="scorBut" (click)="decreaseScore(match.team2)" [disabled]="!match.team1.selected || !match.team2.selected">-</button>
           </div>
           <div class="team">
-            <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
-            <span>{{ match.team2.name }}</span>
+            <ng-container *ngIf="!match.team2.selected">
+              <img [src]="flagUrls['Desconocido']" alt="Desconocido flag">
+              <select (change)="selectTeam(match, $event, 2)">
+                <option value="Desconocido">Desconocido</option>
+                <option *ngFor="let team of teams" [value]="team">{{ team }}</option>
+              </select>
+            </ng-container>
+            <ng-container *ngIf="match.team2.selected">
+              <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+              <span>{{ match.team2.name }}</span>
+            </ng-container>
           </div>
         </div>
         <div class="stadinfo">
-            <span>{{ match.stadium }}</span>
+          <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)">
+          <button *ngIf="!match.resultEntered" class="submit-button" (click)="submitResult(match)" [disabled]="!match.team1.selected || !match.team2.selected">
             Ingresar Resultado
           </button>
           <span *ngIf="match.resultEntered" class="submit-button">
