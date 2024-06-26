@@ -36,6 +36,12 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./init_database.sql:/docker-entrypoint-initdb.d/init_database.sql
+    deploy:
+      resources:
+        limits:
+          memory: 5g 
+        reservations:
+          memory: 2g
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

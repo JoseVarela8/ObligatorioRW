@@ -152,7 +152,15 @@ INSERT INTO Partido (fecha, fase, id_equipo1, id_equipo2, id_loc) VALUES
 ('2024-07-01 20:00:00', 'Grupo C', 9, 15, 3),
 ('2024-07-01 21:00:00', 'Grupo C', 2, 12, 13),
 ('2024-07-02 18:00:00', 'Grupo D', 3, 6, 14),
-('2024-07-02 20:00:00', 'Grupo D', 7, 13, 4);
+('2024-07-02 20:00:00', 'Grupo D', 7, 13, 4),
+('2024-07-04 20:00:00', 'Cuartos', NULL, NULL, 9),
+('2024-07-05 20:00:00', 'Cuartos', NULL, NULL, 5),
+('2024-07-06 18:00:00', 'Cuartos', NULL, NULL, 12),
+('2024-07-06 15:00:00', 'Cuartos', NULL, NULL, 8),
+('2024-07-09 20:00:00', 'Semifinal', NULL, NULL, 7),
+('2024-07-10 20:00:00', 'Semifinal', NULL, NULL, 6),
+('2024-07-13 20:00:00', 'Tercer Puesto', NULL, NULL, 6),
+('2024-07-14 20:00:00', 'Final', NULL, NULL, 2);
 
 -- Insertar Carreras
 INSERT INTO Carrera (nombre_carrera) VALUES
@@ -171,7 +179,9 @@ INSERT INTO Carrera (nombre_carrera) VALUES
 INSERT INTO Usuario (nombre_usuario, contrasena, mail) VALUES
 ('admin1', 'admin', 'admin1@example.com'),
 ('admin2', 'admin', 'admin2@example.com'),
-('estudiante1', 'estudiante', 'estudiante1@example.com');
+('estudiante1', 'estudiante', 'estudiante1@example.com'),
+('estudiante2', 'estudiante', 'estudiante2@example.com'),
+('estudiante3', 'estudiante', 'estudiante3@example.com');
 
 -- Insertar Admins
 INSERT INTO Administrador (id_usuario) VALUES
@@ -181,8 +191,14 @@ INSERT INTO Administrador (id_usuario) VALUES
 -- Insertar Alumno
 INSERT INTO Alumno (id_usuario, id_carrera, puntaje, pred_champ, pred_subchamp) VALUES
 ((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante1'), 
- (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingeniería Informática'),
+ (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingenieria Informatica'),
  0, -- Puntaje inicial
  'Bolivia', -- Predicción de campeón inicial
+ 'Paraguay' -- Predicción de subcampeón inicial
+),
+((SELECT id_usuario FROM Usuario WHERE nombre_usuario = 'estudiante2'), 
+ (SELECT id_carrera FROM Carrera WHERE nombre_carrera = 'Ingenieria Informatica'),
+ 0, -- Puntaje inicial
+ 'Venezuela', -- Predicción de campeón inicial
  'Paraguay' -- Predicción de subcampeón inicial
 );

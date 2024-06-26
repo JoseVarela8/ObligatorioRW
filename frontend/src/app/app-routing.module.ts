@@ -6,6 +6,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { StadiumsComponent } from './components/stadiums/stadiums.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { TeamsComponent } from './components/teams/teams.component';
+import { RankingComponent } from './components/ranking/ranking.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -14,7 +16,8 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'stadiums', component: StadiumsComponent },
   { path: 'calendar', component: CalendarComponent },
-  { path: 'teams', component: TeamsComponent }
+  { path: 'teams', component: TeamsComponent },
+  { path: 'ranking', component: RankingComponent },
 ];
 
 @NgModule({

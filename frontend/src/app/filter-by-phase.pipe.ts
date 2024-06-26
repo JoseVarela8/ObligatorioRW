@@ -4,10 +4,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'filterByPhase'
 })
 export class FilterByPhasePipe implements PipeTransform {
-  transform(matches: any[], searchString: string): any[] {
-    if (!matches || !searchString) {
+  transform(matches: any[], searchStrings: string[]): any[] {
+    if (!matches || !searchStrings || searchStrings.length === 0) {
       return matches;
     }
-    return matches.filter(match => match.group.includes(searchString));
+    return matches.filter(match => searchStrings.includes(match.group));
   }
 }
