@@ -20,6 +20,7 @@ const routes: Routes = [
   { path: 'teams', component: TeamsComponent },
   { path: 'ranking', component: RankingComponent },
   { path: 'prize', component: PrizeComponent },
+  { path: 'results', component: CalendarComponent },
 ];
 
 @NgModule({
