@@ -16,6 +16,7 @@ import { FilterByPhasePipe } from './filter-by-phase.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AdministratorComponent } from './components/administrator/administrator.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { PrizeComponent } from './components/prize/prize.component';
 
 const routes: Routes = [
   { path: '', component: MainComponent },
@@ -39,7 +40,8 @@ const routes: Routes = [
     TeamsComponent,
     FilterByPhasePipe,
     AdministratorComponent,
-    RankingComponent
+    RankingComponent,
+    PrizeComponent
   ],
   imports: [
     BrowserModule,
