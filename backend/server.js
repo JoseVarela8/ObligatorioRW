@@ -4,6 +4,8 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
+// const nodemailer = require('nodemailer');
+// const cron = require('node-cron');
 
 app.use(cors());
 app.use(express.json()); // Asegúrate de que este middleware está habilitado para parsear JSON
@@ -23,6 +25,80 @@ db.connect((err) => {
   }
   console.log('Connected to MySQL database');
 });
+/*
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS  
+  }
+});
+
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('El servidor está listo para enviar correos');
+  }
+});
+
+function enviarCorreoPartidosDelDia(alumno, partidos) {
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: alumno.mail, // El correo del alumno
+    subject: 'Partidos de hoy - No olvides cargar tus predicciones',
+    text: `Hola ${alumno.nombre_usuario},\n\nEstos son los partidos de hoy:\n\n${partidos.map(p => `${p.equipo1} vs ${p.equipo2} a las ${new Date(p.fecha).toLocaleTimeString()}`).join('\n')}\n\n¡No olvides cargar tus predicciones!\n\nSaludos,\nPencaUCU`
+  };
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.log('Error al enviar el correo: ', error);
+    } else {
+      console.log('Correo enviado: ' + info.response);
+    }
+  });
+}
+
+ // Tarea cron para enviar correos a las 8 AM todos los días
+cron.schedule('0 8 * * *', () => {
+  enviarCorreosDiarios();
+}); 
+
+function enviarCorreosDiarios() {
+  const hoy = new Date().toISOString().slice(0, 10); // Obtener la fecha de hoy en formato YYYY-MM-DD
+
+  // Obtener los partidos del día
+  const sqlPartidosDelDia = `
+    SELECT p.fecha, e1.nombre_equipo AS equipo1, e2.nombre_equipo AS equipo2
+    FROM Partido p
+    JOIN Equipo e1 ON p.id_equipo1 = e1.id_equipo
+    JOIN Equipo e2 ON p.id_equipo2 = e2.id_equipo
+    WHERE DATE(p.fecha) = ?
+  `;
+  db.query(sqlPartidosDelDia, [hoy], (err, partidos) => {
+    if (err) {
+      console.error('Error fetching today\'s matches from MySQL:', err);
+      return;
+    }
+
+    if (partidos.length > 0) {
+      // Obtener todos los alumnos
+      const sqlAlumnos = 'SELECT * FROM Alumno a JOIN Usuario u ON a.id_usuario = u.id_usuario';
+      db.query(sqlAlumnos, (err, alumnos) => {
+        if (err) {
+          console.error('Error fetching students from MySQL:', err);
+          return;
+        }
+
+        // Enviar correo a cada alumno
+        alumnos.forEach(alumno => {
+          enviarCorreoPartidosDelDia(alumno, partidos);
+        });
+      });
+    }
+  });
+}
+*/
 
 // Ruta para el login
 app.post('/login', (req, res) => {
@@ -479,7 +555,6 @@ app.get('/partidos-con-resultados/:id_alumno', (req, res) => {
     res.json(results);
   });
 });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

@@ -41,17 +41,27 @@
             <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <!-- <span *ngIf="match.predictionEntered">Predicción ya realizada</span> -->
-          <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Ingresar Predicción
-          </button>
-          <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Modificar Predicción
-          </button>
+          <ng-container *ngIf="canEnterPrediction(match.matchDate); else predictionClosed">
+            <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Ingresar Predicción
+            </button>
+            <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Modificar Predicción
+            </button>
+          </ng-container>
+          <ng-template #predictionClosed>
+            <span *ngIf="isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque el partido ya pasó.
+            </span>
+            <span *ngIf="!isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque falta menos de 1 hora para el partido.
+            </span>
+          </ng-template>
         </div>
       </div>
     </div>
   </section>
+
   <section id="cuartos" class="group-section">
     <h2 (click)="toggleSection('cuartos')">Cuartos</h2>
     <div class="prediction-cards" [@toggleAnimation]="sectionVisible['cuartos']">
@@ -84,12 +94,22 @@
             <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Ingresar Predicción
-          </button>
-          <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Modificar Predicción
-          </button>
+          <ng-container *ngIf="canEnterPrediction(match.matchDate); else predictionClosed">
+            <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Ingresar Predicción
+            </button>
+            <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Modificar Predicción
+            </button>
+          </ng-container>
+          <ng-template #predictionClosed>
+            <span *ngIf="isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque el partido ya pasó.
+            </span>
+            <span *ngIf="!isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque falta menos de 1 hora para el partido.
+            </span>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -127,12 +147,22 @@
             <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Ingresar Predicción
-          </button>
-          <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Modificar Predicción
-          </button>
+          <ng-container *ngIf="canEnterPrediction(match.matchDate); else predictionClosed">
+            <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Ingresar Predicción
+            </button>
+            <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Modificar Predicción
+            </button>
+          </ng-container>
+          <ng-template #predictionClosed>
+            <span *ngIf="isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque el partido ya pasó.
+            </span>
+            <span *ngIf="!isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque falta menos de 1 hora para el partido.
+            </span>
+          </ng-template>
         </div>
       </div>
     </div>
@@ -167,15 +197,25 @@
           </div>
         </div>
         <div class="stadinfo">
-          <span>{{ match.stadium }}</span>
+            <span>{{ match.stadium }}</span>
         </div>
         <div class="card-footer">
-          <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Ingresar Predicción
-          </button>
-          <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
-            Modificar Predicción
-          </button>
+          <ng-container *ngIf="canEnterPrediction(match.matchDate); else predictionClosed">
+            <button *ngIf="!match.predictionEntered" class="submit-button" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Ingresar Predicción
+            </button>
+            <button *ngIf="match.predictionEntered" class="submit-button submit-button-mod" [disabled]="!isValidPrediction(match)" (click)="submitPrediction(match)">
+              Modificar Predicción
+            </button>
+          </ng-container>
+          <ng-template #predictionClosed>
+            <span *ngIf="isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque el partido ya pasó.
+            </span>
+            <span *ngIf="!isMatchPassed(match.matchDate)">
+              No se puede ingresar la predicción porque falta menos de 1 hora para el partido.
+            </span>
+          </ng-template>
         </div>
       </div>
     </div>
