@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-main',
@@ -64,7 +63,8 @@ export class MainComponent implements OnInit {
           team1: { name: match.equipo1 || 'Desconocido', flag: this.flagUrls[match.equipo1] || this.flagUrls['Desconocido'], score: '-' },
           team2: { name: match.equipo2 || 'Desconocido', flag: this.flagUrls[match.equipo2] || this.flagUrls['Desconocido'], score: '-' },
           stadium: match.nombre_estadio,
-          predictionEntered: false
+          predictionEntered: false,
+          matchDate: match.fecha // Almacenar la fecha original del partido
         }));
         this.updateMatchesWithPredictions();
       },
@@ -73,7 +73,6 @@ export class MainComponent implements OnInit {
       }
     });
   }  
-
 
   getPredictions(): void {
     const alumnoId = Number(sessionStorage.getItem('alumnoId'));
@@ -123,7 +122,20 @@ export class MainComponent implements OnInit {
   }
 
   isValidPrediction(match: any): boolean {
-    return match.team1.score !== '-' && match.team2.score !== '-'
+    return match.team1.score !== '-' && match.team2.score !== '-';
+  }
+
+  canEnterPrediction(matchDate: string): boolean {
+    const matchTime = new Date(matchDate).getTime();
+    const currentTime = new Date().getTime();
+    const oneHourBeforeMatch = matchTime - (60 * 60 * 1000);
+    return currentTime < oneHourBeforeMatch;
+  }
+
+  isMatchPassed(matchDate: string): boolean {
+    const matchTime = new Date(matchDate).getTime();
+    const currentTime = new Date().getTime();
+    return currentTime > matchTime;
   }
 
   submitPrediction(match: any): void {
@@ -155,6 +167,7 @@ export class MainComponent implements OnInit {
       }
     });
   }  
+
   getWinner(team1: any, team2: any): string {
     if (team1.score > team2.score) {
       return team1.name;
@@ -165,3 +178,4 @@ export class MainComponent implements OnInit {
     }
   }
 }
+

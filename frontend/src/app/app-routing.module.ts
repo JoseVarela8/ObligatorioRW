@@ -7,6 +7,7 @@ import { StadiumsComponent } from './components/stadiums/stadiums.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { TeamsComponent } from './components/teams/teams.component';
 import { RankingComponent } from './components/ranking/ranking.component';
+import { PrizeComponent } from './components/prize/prize.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,8 @@ const routes: Routes = [
   { path: 'calendar', component: CalendarComponent },
   { path: 'teams', component: TeamsComponent },
   { path: 'ranking', component: RankingComponent },
+  { path: 'prize', component: PrizeComponent },
+  { path: 'results', component: CalendarComponent },
 ];
 
 @NgModule({

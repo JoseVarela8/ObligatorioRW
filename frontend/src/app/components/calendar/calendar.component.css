@@ -1,0 +1,115 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("../../../assets/fondo.jpg");
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.main-header {
+    background-color: #000;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+}
+
+.group-section {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.prediction-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.prediction-card {
+    background-color: #f0eeee;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 310px;
+    padding: 20px;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.group-label {
+    background-color: #000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team {
+    text-align: center;
+}
+
+.team img {
+    width: 50px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #0a2481;
+    color: white;
+    border-radius: 50%;
+    font-size: 1.2em;
+    margin: 0 10px;
+}
+
+.stadinfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+    color: #5a595998;
+    text-align: center;
+}
+
+.prediction-results {
+    text-align: center;
+    margin-top: 10px;
+    background-color: #f0eeee;
+    color: black;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+h1,
+h2,
+h3,
+p,
+a,
+span {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
