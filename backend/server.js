@@ -436,6 +436,51 @@ app.get('/ranking', (req, res) => {
   });
 });
 
+// Ruta para obtener partidos con resultados y predicciones por alumno
+app.get('/partidos-con-resultados/:id_alumno', (req, res) => {
+  const { id_alumno } = req.params;
+
+  const sql = `
+    SELECT 
+      p.id_partido, 
+      p.fecha, 
+      p.fase, 
+      l.nombre_estadio, 
+      e1.nombre_equipo AS equipo1, 
+      e2.nombre_equipo AS equipo2, 
+      r.ganador, 
+      r.goles_equipo1, 
+      r.goles_equipo2,
+      pred.pred_goles_equ1,
+      pred.pred_goles_equ2,
+      pred.ganador_pred
+    FROM 
+      Partido p 
+    LEFT JOIN 
+      Locacion l ON p.id_loc = l.id_loc 
+    LEFT JOIN 
+      Equipo e1 ON p.id_equipo1 = e1.id_equipo 
+    LEFT JOIN 
+      Equipo e2 ON p.id_equipo2 = e2.id_equipo
+    LEFT JOIN 
+      Resultado r ON p.id_partido = r.id_partido
+    LEFT JOIN 
+      Prediccion pred ON p.id_partido = pred.id_partido AND pred.id_alumno = ?
+    WHERE 
+      r.id_res IS NOT NULL
+    ORDER BY 
+      p.id_partido
+  `;
+  db.query(sql, [id_alumno], (err, results) => {
+    if (err) {
+      console.error('Error fetching data from MySQL:', err);
+      return res.status(500).json({ error: 'Error fetching data' });
+    }
+    res.json(results);
+  });
+});
+
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

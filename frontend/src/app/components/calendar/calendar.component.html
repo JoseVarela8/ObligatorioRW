@@ -1,2 +1,40 @@
 <app-header></app-header>
-<p>calendar works!</p>
+<div class="main-container">
+  <header class="main-header">
+    <h2>Partidos con Resultados</h2>
+  </header>
+  <section class="group-section">
+    <div class="prediction-cards">
+      <div class="prediction-card" *ngFor="let match of matches">
+        <div class="card-header">
+          <span>{{ match.date }}</span>
+          <span class="group-label">{{ match.group }}</span>
+        </div>
+        <div class="teams">
+          <div class="team">
+            <img [src]="match.team1.flag" alt="{{ match.team1.name }} flag">
+            <span>{{ match.team1.name }}</span>
+          </div>
+          <div class="score">
+            <span>{{ match.goles1 }}</span>
+          </div>
+          <div class="score">
+            <span>{{ match.goles2 }}</span>
+          </div>
+          <div class="team">
+            <img [src]="match.team2.flag" alt="{{ match.team2.name }} flag">
+            <span>{{ match.team2.name }}</span>
+          </div>
+        </div>
+        <div class="stadinfo">
+          <span>{{ match.stadium }}</span>
+        </div>
+        <div class="prediction-results">
+          <p *ngIf="match.pred_goles_equ1 !== null">Tu Predicción: {{ match.pred_goles_equ1 }} - {{ match.pred_goles_equ2 }}</p>
+          <p *ngIf="match.pred_goles_equ1 === null">No realizaste una predicción para este partido.</p>
+          <p>Puntos Ganados: {{ calculatePoints(match) }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
